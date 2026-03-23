@@ -77,7 +77,7 @@ class SessionsFragment : Fragment() {
 
         // RecyclerView
         adapter = SessionsAdapter { session ->
-            val action = SessionsFragmentDirections.actionSessionsToNewSession(session.id)
+            val action = SessionsFragmentDirections.actionSessionsToNewSession(session.id.toInt())
             findNavController().navigate(action)
         }
         binding.recyclerSessions.layoutManager = LinearLayoutManager(requireContext())
