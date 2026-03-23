@@ -42,7 +42,8 @@ jobs:
 
       - name: Dar permisos a gradlew
         run: chmod +x ./gradlew
-        - name: Crear iconos de la app
+        
+      - name: Crear iconos de la app
         run: |
           mkdir -p app/src/main/res/mipmap-hdpi
           mkdir -p app/src/main/res/mipmap-mdpi
