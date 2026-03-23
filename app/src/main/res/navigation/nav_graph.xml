@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_new_session">
         <argument
             android:name="sessionId"
-            app:argType="long"
+            app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
 
