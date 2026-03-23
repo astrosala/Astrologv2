@@ -1,4 +1,3 @@
-
 package com.astrolog.app.ui.settings
 
 import android.content.Context
@@ -25,22 +24,27 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val prefs = requireContext().getSharedPreferences("astrolog_prefs", Context.MODE_PRIVATE)
 
-        // Cargar valores guardados
-        binding.editCustom1Name.setText(prefs.getString("custom1_name", "Filtro personalizado 1"))
-        binding.editCustom2Name.setText(prefs.getString("custom2_name", "Filtro personalizado 2"))
-        binding.switchSii.isChecked = prefs.getBoolean("show_sii", true)
-        binding.switchLext.isChecked = prefs.getBoolean("show_lext", true)
+        binding.switchLpro.isChecked = prefs.getBoolean("show_lpro", true)
+        binding.switchHa.isChecked = prefs.getBoolean("show_ha", true)
+        binding.switchOiii.isChecked = prefs.getBoolean("show_oiii", true)
+        binding.switchSii.isChecked = prefs.getBoolean("show_sii", false)
+        binding.switchLext.isChecked = prefs.getBoolean("show_lext", false)
         binding.switchCustom1.isChecked = prefs.getBoolean("show_custom1", false)
         binding.switchCustom2.isChecked = prefs.getBoolean("show_custom2", false)
+        binding.editCustom1Name.setText(prefs.getString("custom1_name", "Filtro personalizado 1"))
+        binding.editCustom2Name.setText(prefs.getString("custom2_name", "Filtro personalizado 2"))
 
         binding.buttonSaveSettings.setOnClickListener {
             prefs.edit().apply {
-                putString("custom1_name", binding.editCustom1Name.text.toString().ifBlank { "Filtro personalizado 1" })
-                putString("custom2_name", binding.editCustom2Name.text.toString().ifBlank { "Filtro personalizado 2" })
+                putBoolean("show_lpro", binding.switchLpro.isChecked)
+                putBoolean("show_ha", binding.switchHa.isChecked)
+                putBoolean("show_oiii", binding.switchOiii.isChecked)
                 putBoolean("show_sii", binding.switchSii.isChecked)
                 putBoolean("show_lext", binding.switchLext.isChecked)
                 putBoolean("show_custom1", binding.switchCustom1.isChecked)
                 putBoolean("show_custom2", binding.switchCustom2.isChecked)
+                putString("custom1_name", binding.editCustom1Name.text.toString().ifBlank { "Filtro personalizado 1" })
+                putString("custom2_name", binding.editCustom2Name.text.toString().ifBlank { "Filtro personalizado 2" })
                 apply()
             }
             Toast.makeText(requireContext(), "Ajustes guardados", Toast.LENGTH_SHORT).show()
