@@ -7,25 +7,76 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
         app:title="Calendario" app:titleTextColor="@color/text_primary"
-        app:subtitle="Visibilidad Cataluña 41.5°N" app:subtitleTextColor="@color/text_secondary" />
+        app:subtitle="Visibilidad por temporada" app:subtitleTextColor="@color/text_secondary" />
+
+    <!-- Temporada activa -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp" android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="10dp"
+        app:strokeColor="@color/accent_purple" app:strokeWidth="1dp">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="12dp">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:id="@+id/text_season_name"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Sin temporada activa"
+                        android:textColor="@color/accent_purple_light"
+                        android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/text_season_months"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Crea una temporada para empezar"
+                        android:textColor="@color/text_secondary" android:textSize="11sp"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_new_season"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="+ Nueva" android:textSize="11sp"
+                    app:strokeColor="@color/accent_purple"
+                    android:layout_marginEnd="6dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_change_season"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Cambiar" android:textSize="11sp"
+                    app:strokeColor="@color/border_dark" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Leyenda -->
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:padding="12dp" android:gravity="center_vertical">
+        android:orientation="horizontal" android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp" android:gravity="center_vertical">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="★" android:textColor="@color/vis_optimal" android:textSize="12sp" android:paddingEnd="2dp" />
+            android:text="★" android:textColor="@color/vis_optimal" android:textSize="12sp"
+            android:paddingEnd="2dp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Óptimo  " android:textColor="@color/text_secondary" android:textSize="11sp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="✓" android:textColor="@color/vis_good" android:textSize="12sp" android:paddingEnd="2dp" />
+            android:text="✓" android:textColor="@color/vis_good" android:textSize="12sp"
+            android:paddingEnd="2dp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Buena  " android:textColor="@color/text_secondary" android:textSize="11sp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="~" android:textColor="@color/vis_low" android:textSize="12sp" android:paddingEnd="2dp" />
+            android:text="~" android:textColor="@color/vis_low" android:textSize="12sp"
+            android:paddingEnd="2dp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Baja  " android:textColor="@color/text_secondary" android:textSize="11sp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="—" android:textColor="@color/vis_none" android:textSize="12sp" android:paddingEnd="2dp" />
+            android:text="—" android:textColor="@color/vis_none" android:textSize="12sp"
+            android:paddingEnd="2dp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="No visible" android:textColor="@color/text_secondary" android:textSize="11sp" />
     </LinearLayout>
@@ -34,4 +85,5 @@
         android:id="@+id/recycler_calendar"
         android:layout_width="match_parent" android:layout_height="0dp"
         android:layout_weight="1" android:padding="8dp" android:clipToPadding="false" />
+
 </LinearLayout>
