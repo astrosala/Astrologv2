@@ -16,14 +16,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
-// ── ViewModel ──
 class WishlistViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo: AstroRepository
-    val allObjects = run {
+    private val repo: AstroRepository = run {
         val db = AstroDatabase.getDatabase(app)
-        repo = AstroRepository(db.sessionDao(), db.astroObjectDao())
-        repo.allObjects
+        AstroRepository(db.sessionDao(), db.astroObjectDao())
     }
+
+    val allObjects = repo.allObjects
 
     fun addObject(name: String, filter: String, alertMonths: String, alertEnabled: Boolean) = viewModelScope.launch {
         if (name.isBlank()) return@launch
@@ -56,7 +55,6 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
     }
 }
 
-// ── Fragment ──
 class WishlistFragment : Fragment() {
 
     private var _binding: FragmentWishlistBinding? = null
@@ -94,12 +92,14 @@ class WishlistFragment : Fragment() {
 
     private fun showAddObjectDialog() {
         val dialogView = layoutInflater.inflate(com.astrolog.app.R.layout.dialog_add_object, null)
+        val nameField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_name)
+        val filterField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_filter)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Añadir objeto")
             .setView(dialogView)
             .setPositiveButton("Añadir") { _, _ ->
-                val name = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.editDialogName)?.text.toString()
-                val filter = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.editDialogFilter)?.text.toString()
+                val name = nameField?.text.toString()
+                val filter = filterField?.text.toString()
                 viewModel.addObject(name, filter, "", false)
             }
             .setNegativeButton("Cancelar", null)
