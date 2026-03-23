@@ -1,1 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="16dp">
 
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Visibilidad por mes" android:textColor="@color/accent_purple"
+        android:textSize="12sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="6dp">
+        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
+            android:text="Marzo" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <Spinner android:id="@+id/spinner_edit_mar" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="6dp">
+        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
+            android:text="Abril" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <Spinner android:id="@+id/spinner_edit_abr" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="6dp">
+        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
+            android:text="Mayo" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <Spinner android:id="@+id/spinner_edit_may" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
+            android:text="Junio" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <Spinner android:id="@+id/spinner_edit_jun" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="Filtro principal"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_vis_filter" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:inputType="text"
+            android:textColor="@color/text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
