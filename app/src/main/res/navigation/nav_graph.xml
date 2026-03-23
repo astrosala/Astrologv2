@@ -44,4 +44,10 @@
         android:label="Lista de deseos"
         tools:layout="@layout/fragment_wishlist" />
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.astrolog.app.ui.settings.SettingsFragment"
+        android:label="Ajustes"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>
