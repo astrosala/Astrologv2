@@ -1,4 +1,3 @@
-
 package com.astrolog.app.ui.newsession
 
 import android.app.DatePickerDialog
@@ -39,48 +38,40 @@ class NewSessionFragment : Fragment() {
             binding.buttonSave.text = "Actualizar sesión"
         }
 
-        // Fecha: date picker
+        // Mostrar filtros configurables según Ajustes
+        binding.cardSii.visibility = if (viewModel.showSii) View.VISIBLE else View.GONE
+        binding.cardLext.visibility = if (viewModel.showLext) View.VISIBLE else View.GONE
+        binding.cardCustom1.visibility = if (viewModel.showCustom1) View.VISIBLE else View.GONE
+        binding.cardCustom2.visibility = if (viewModel.showCustom2) View.VISIBLE else View.GONE
+        binding.textCustom1Label.text = viewModel.custom1Name
+        binding.textCustom2Label.text = viewModel.custom2Name
+
+        // Fecha
         binding.editDate.setOnClickListener { showDatePicker() }
         binding.editDate.isFocusable = false
-
-        // Fecha por defecto: hoy
         if (args.sessionId <= 0) {
             val cal = Calendar.getInstance()
-            binding.editDate.setText(
-                "%02d/%02d/%04d".format(
-                    cal.get(Calendar.DAY_OF_MONTH),
-                    cal.get(Calendar.MONTH) + 1,
-                    cal.get(Calendar.YEAR)
-                )
-            )
+            binding.editDate.setText("%02d/%02d/%04d".format(
+                cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)
+            ))
         }
 
-        // Autocompletado offline
+        // Autocompletado
         viewModel.objectNames.observe(viewLifecycleOwner) { names ->
-            val adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                names
+            binding.editObjectName.setAdapter(
+                ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, names)
             )
-            binding.editObjectName.setAdapter(adapter)
         }
 
-        // Seeing selector
-        val seeingDots = listOf(
-            binding.dot1, binding.dot2, binding.dot3,
-            binding.dot4, binding.dot5
-        )
-        seeingDots.forEachIndexed { i, dot ->
-            dot.setOnClickListener {
-                viewModel.seeing.value = i + 1
-            }
-        }
+        // Seeing
+        val seeingDots = listOf(binding.dot1, binding.dot2, binding.dot3, binding.dot4, binding.dot5)
+        seeingDots.forEachIndexed { i, dot -> dot.setOnClickListener { viewModel.seeing.value = i + 1 } }
         viewModel.seeing.observe(viewLifecycleOwner) { value ->
             seeingDots.forEachIndexed { i, dot -> dot.isSelected = i < value }
             binding.textSeeingValue.text = "Seeing $value/5"
         }
 
-        // TextWatcher genérico para recalcular tiempos
+        // TextWatcher para recalcular HH:MM en tiempo real
         val recalcWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -92,64 +83,57 @@ class NewSessionFragment : Fragment() {
                 viewModel.haExpSec.value = b.editHaExp.text.toString().toIntOrNull() ?: 0
                 viewModel.oiiiSubs.value = b.editOiiiSubs.text.toString().toIntOrNull() ?: 0
                 viewModel.oiiiExpSec.value = b.editOiiiExp.text.toString().toIntOrNull() ?: 0
+                viewModel.siiSubs.value = b.editSiiSubs.text.toString().toIntOrNull() ?: 0
+                viewModel.siiExpSec.value = b.editSiiExp.text.toString().toIntOrNull() ?: 0
+                viewModel.lextSubs.value = b.editLextSubs.text.toString().toIntOrNull() ?: 0
+                viewModel.lextExpSec.value = b.editLextExp.text.toString().toIntOrNull() ?: 0
+                viewModel.custom1Subs.value = b.editCustom1Subs.text.toString().toIntOrNull() ?: 0
+                viewModel.custom1ExpSec.value = b.editCustom1Exp.text.toString().toIntOrNull() ?: 0
+                viewModel.custom2Subs.value = b.editCustom2Subs.text.toString().toIntOrNull() ?: 0
+                viewModel.custom2ExpSec.value = b.editCustom2Exp.text.toString().toIntOrNull() ?: 0
                 viewModel.recalcTimes()
             }
         }
 
-        binding.editLproSubs.addTextChangedListener(recalcWatcher)
-        binding.editLproExp.addTextChangedListener(recalcWatcher)
-        binding.editHaSubs.addTextChangedListener(recalcWatcher)
-        binding.editHaExp.addTextChangedListener(recalcWatcher)
-        binding.editOiiiSubs.addTextChangedListener(recalcWatcher)
-        binding.editOiiiExp.addTextChangedListener(recalcWatcher)
+        listOf(
+            binding.editLproSubs, binding.editLproExp,
+            binding.editHaSubs, binding.editHaExp,
+            binding.editOiiiSubs, binding.editOiiiExp,
+            binding.editSiiSubs, binding.editSiiExp,
+            binding.editLextSubs, binding.editLextExp,
+            binding.editCustom1Subs, binding.editCustom1Exp,
+            binding.editCustom2Subs, binding.editCustom2Exp
+        ).forEach { it.addTextChangedListener(recalcWatcher) }
 
-        // Observar tiempos calculados
+        // Observar tiempos
         viewModel.lproTime.observe(viewLifecycleOwner) { binding.textLproTime.text = it }
         viewModel.haTime.observe(viewLifecycleOwner) { binding.textHaTime.text = it }
         viewModel.oiiiTime.observe(viewLifecycleOwner) { binding.textOiiiTime.text = it }
+        viewModel.siiTime.observe(viewLifecycleOwner) { binding.textSiiTime.text = it }
+        viewModel.lextTime.observe(viewLifecycleOwner) { binding.textLextTime.text = it }
+        viewModel.custom1Time.observe(viewLifecycleOwner) { binding.textCustom1Time.text = it }
+        viewModel.custom2Time.observe(viewLifecycleOwner) { binding.textCustom2Time.text = it }
         viewModel.totalTime.observe(viewLifecycleOwner) { binding.textTotalTime.text = "Total: $it" }
 
         // Rellenar al editar
-        viewModel.objectName.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty() && binding.editObjectName.text.isNullOrEmpty())
-                binding.editObjectName.setText(it)
-        }
-        viewModel.date.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty() && binding.editDate.text.isNullOrEmpty())
-                binding.editDate.setText(it)
-        }
-        viewModel.conditions.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty() && binding.editConditions.text.isNullOrEmpty())
-                binding.editConditions.setText(it)
-        }
-        viewModel.notes.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty() && binding.editNotes.text.isNullOrEmpty())
-                binding.editNotes.setText(it)
-        }
-        viewModel.lproSubs.observe(viewLifecycleOwner) {
-            if (it > 0 && binding.editLproSubs.text.isNullOrEmpty())
-                binding.editLproSubs.setText(it.toString())
-        }
-        viewModel.lproExpSec.observe(viewLifecycleOwner) {
-            if (it > 0 && binding.editLproExp.text.isNullOrEmpty())
-                binding.editLproExp.setText(it.toString())
-        }
-        viewModel.haSubs.observe(viewLifecycleOwner) {
-            if (it > 0 && binding.editHaSubs.text.isNullOrEmpty())
-                binding.editHaSubs.setText(it.toString())
-        }
-        viewModel.haExpSec.observe(viewLifecycleOwner) {
-            if (it > 0 && binding.editHaExp.text.isNullOrEmpty())
-                binding.editHaExp.setText(it.toString())
-        }
-        viewModel.oiiiSubs.observe(viewLifecycleOwner) {
-            if (it > 0 && binding.editOiiiSubs.text.isNullOrEmpty())
-                binding.editOiiiSubs.setText(it.toString())
-        }
-        viewModel.oiiiExpSec.observe(viewLifecycleOwner) {
-            if (it > 0 && binding.editOiiiExp.text.isNullOrEmpty())
-                binding.editOiiiExp.setText(it.toString())
-        }
+        viewModel.objectName.observe(viewLifecycleOwner) { if (it.isNotEmpty() && binding.editObjectName.text.isNullOrEmpty()) binding.editObjectName.setText(it) }
+        viewModel.date.observe(viewLifecycleOwner) { if (it.isNotEmpty() && binding.editDate.text.isNullOrEmpty()) binding.editDate.setText(it) }
+        viewModel.conditions.observe(viewLifecycleOwner) { if (it.isNotEmpty() && binding.editConditions.text.isNullOrEmpty()) binding.editConditions.setText(it) }
+        viewModel.notes.observe(viewLifecycleOwner) { if (it.isNotEmpty() && binding.editNotes.text.isNullOrEmpty()) binding.editNotes.setText(it) }
+        viewModel.lproSubs.observe(viewLifecycleOwner) { if (it > 0 && binding.editLproSubs.text.isNullOrEmpty()) binding.editLproSubs.setText(it.toString()) }
+        viewModel.lproExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editLproExp.text.isNullOrEmpty()) binding.editLproExp.setText(it.toString()) }
+        viewModel.haSubs.observe(viewLifecycleOwner) { if (it > 0 && binding.editHaSubs.text.isNullOrEmpty()) binding.editHaSubs.setText(it.toString()) }
+        viewModel.haExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editHaExp.text.isNullOrEmpty()) binding.editHaExp.setText(it.toString()) }
+        viewModel.oiiiSubs.observe(viewLifecycleOwner) { if (it > 0 && binding.editOiiiSubs.text.isNullOrEmpty()) binding.editOiiiSubs.setText(it.toString()) }
+        viewModel.oiiiExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editOiiiExp.text.isNullOrEmpty()) binding.editOiiiExp.setText(it.toString()) }
+        viewModel.siiSubs.observe(viewLifecycleOwner) { if (it > 0 && binding.editSiiSubs.text.isNullOrEmpty()) binding.editSiiSubs.setText(it.toString()) }
+        viewModel.siiExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editSiiExp.text.isNullOrEmpty()) binding.editSiiExp.setText(it.toString()) }
+        viewModel.lextSubs.observe(viewLifecycleOwner) { if (it > 0 && binding.editLextSubs.text.isNullOrEmpty()) binding.editLextSubs.setText(it.toString()) }
+        viewModel.lextExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editLextExp.text.isNullOrEmpty()) binding.editLextExp.setText(it.toString()) }
+        viewModel.custom1Subs.observe(viewLifecycleOwner) { if (it > 0 && binding.editCustom1Subs.text.isNullOrEmpty()) binding.editCustom1Subs.setText(it.toString()) }
+        viewModel.custom1ExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editCustom1Exp.text.isNullOrEmpty()) binding.editCustom1Exp.setText(it.toString()) }
+        viewModel.custom2Subs.observe(viewLifecycleOwner) { if (it > 0 && binding.editCustom2Subs.text.isNullOrEmpty()) binding.editCustom2Subs.setText(it.toString()) }
+        viewModel.custom2ExpSec.observe(viewLifecycleOwner) { if (it > 0 && binding.editCustom2Exp.text.isNullOrEmpty()) binding.editCustom2Exp.setText(it.toString()) }
 
         // Guardar
         binding.buttonSave.setOnClickListener {
@@ -162,15 +146,8 @@ class NewSessionFragment : Fragment() {
 
         viewModel.saveResult.observe(viewLifecycleOwner) { result ->
             when (result) {
-                true -> {
-                    Snackbar.make(binding.root, "Sesión guardada", Snackbar.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
-                }
-                false -> Snackbar.make(
-                    binding.root,
-                    "Completa objeto y fecha",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                true -> { Snackbar.make(binding.root, "Sesión guardada", Snackbar.LENGTH_SHORT).show(); findNavController().popBackStack() }
+                false -> Snackbar.make(binding.root, "Completa objeto y fecha", Snackbar.LENGTH_SHORT).show()
                 null -> {}
             }
         }
@@ -178,21 +155,10 @@ class NewSessionFragment : Fragment() {
 
     private fun showDatePicker() {
         val cal = Calendar.getInstance()
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, day ->
-                binding.editDate.setText(
-                    "%02d/%02d/%04d".format(day, month + 1, year)
-                )
-            },
-            cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        DatePickerDialog(requireContext(), { _, year, month, day ->
+            binding.editDate.setText("%02d/%02d/%04d".format(day, month + 1, year))
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }
