@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -42,7 +41,7 @@
                     android:orientation="horizontal" android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Hα — Askar C1"
+                        android:layout_weight="1" android:text="Ha — Askar C1"
                         android:textColor="@color/filter_ha" android:textSize="13sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:text="Siempre activo" android:textColor="@color/text_secondary"
