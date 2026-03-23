@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class WishlistViewModel(app: Application) : AndroidViewModel(app) {
     private val repo: AstroRepository = run {
         val db = AstroDatabase.getDatabase(app)
-        AstroRepository(db.sessionDao(), db.astroObjectDao())
+        repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
     }
 
     val allObjects = repo.allObjects
