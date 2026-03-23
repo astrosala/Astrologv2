@@ -6,113 +6,64 @@
     android:background="@color/background_dark"
     android:fillViewport="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="16dp">
 
-        <!-- Toolbar -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_new"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Nueva sesión"
-            app:titleTextColor="@color/text_primary"
-            app:navigationIcon="@drawable/ic_back"
-            app:navigationIconTint="@color/text_primary" />
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            app:title="Nueva sesión" app:titleTextColor="@color/text_primary"
+            app:navigationIcon="@drawable/ic_back" app:navigationIconTint="@color/text_primary" />
 
-        <!-- Objeto -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="Objeto (ej. NGC 7822)"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/border_dark"
-            app:hintTextColor="@color/text_secondary"
+            app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
             android:layout_marginTop="8dp">
-
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/edit_object_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
-                android:completionThreshold="1"
-                android:dropDownHeight="200dp"
-                android:inputType="text" />
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="@color/text_primary" android:completionThreshold="1"
+                android:dropDownHeight="200dp" android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Fecha -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Fecha"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/border_dark"
-            app:hintTextColor="@color/text_secondary"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_calendar"
-            app:endIconTint="@color/text_secondary"
-            android:layout_marginTop="8dp">
-
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Fecha" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
+            app:endIconMode="custom" app:endIconDrawable="@drawable/ic_calendar"
+            app:endIconTint="@color/text_secondary" android:layout_marginTop="8dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
-                android:focusable="false"
-                android:clickable="true"
-                android:inputType="none" />
+                android:id="@+id/edit_date" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                android:focusable="false" android:clickable="true" android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Condiciones -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Condiciones"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/border_dark"
-            app:hintTextColor="@color/text_secondary"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Condiciones" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
             android:layout_marginTop="8dp">
-
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_conditions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
+                android:id="@+id/edit_conditions" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textColor="@color/text_primary"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Seeing -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="@color/surface_dark"
-            app:cardCornerRadius="8dp"
-            app:strokeColor="@color/border_dark"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:id="@+id/text_seeing_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Seeing 3/5"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" app:cardBackgroundColor="@color/surface_dark"
+            app:cardCornerRadius="8dp" app:strokeColor="@color/border_dark" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="12dp">
+                <TextView android:id="@+id/text_seeing_value" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Seeing 3/5"
+                    android:textColor="@color/text_secondary" android:textSize="12sp"
                     android:layout_marginBottom="8dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <View android:id="@+id/dot1" android:layout_width="32dp" android:layout_height="32dp"
                         android:layout_marginEnd="6dp" android:background="@drawable/seeing_dot_large" />
                     <View android:id="@+id/dot2" android:layout_width="32dp" android:layout_height="32dp"
@@ -127,26 +78,18 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- L-Pro -->
+        <!-- L-Pro (siempre visible) -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="@color/surface_dark"
-            app:cardCornerRadius="8dp"
-            app:strokeColor="@color/filter_lpro"
-            app:strokeWidth="1dp">
-
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" app:cardBackgroundColor="@color/surface_dark"
+            app:cardCornerRadius="8dp" app:strokeColor="@color/filter_lpro" app:strokeWidth="1dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical" android:padding="12dp">
-
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="L-Pro" android:textColor="@color/filter_lpro"
                     android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
-
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="horizontal" android:gravity="center_vertical">
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                         android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -156,7 +99,6 @@
                             android:layout_height="wrap_content" android:inputType="number"
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                         android:layout_marginStart="8dp" android:hint="Exp (s)"
@@ -167,36 +109,26 @@
                             android:layout_height="wrap_content" android:inputType="number"
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView android:id="@+id/text_lpro_time"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="00:00" android:textColor="@color/filter_lpro"
-                        android:textSize="14sp" android:textStyle="bold"
-                        android:layout_marginStart="10dp" android:minWidth="48dp" />
+                    <TextView android:id="@+id/text_lpro_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/filter_lpro" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Hα (Askar C1) -->
+        <!-- Hα (siempre visible) -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="@color/surface_dark"
-            app:cardCornerRadius="8dp"
-            app:strokeColor="@color/filter_ha"
-            app:strokeWidth="1dp">
-
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" app:cardBackgroundColor="@color/surface_dark"
+            app:cardCornerRadius="8dp" app:strokeColor="@color/filter_ha" app:strokeWidth="1dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical" android:padding="12dp">
-
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Hα — Askar C1" android:textColor="@color/filter_ha"
+                    android:text="Ha — Askar C1" android:textColor="@color/filter_ha"
                     android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
-
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="horizontal" android:gravity="center_vertical">
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                         android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -206,7 +138,6 @@
                             android:layout_height="wrap_content" android:inputType="number"
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                         android:layout_marginStart="8dp" android:hint="Exp (s)"
@@ -217,36 +148,26 @@
                             android:layout_height="wrap_content" android:inputType="number"
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView android:id="@+id/text_ha_time"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="00:00" android:textColor="@color/filter_ha"
-                        android:textSize="14sp" android:textStyle="bold"
-                        android:layout_marginStart="10dp" android:minWidth="48dp" />
+                    <TextView android:id="@+id/text_ha_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/filter_ha" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- OIII (Askar C2) -->
+        <!-- OIII (siempre visible) -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="@color/surface_dark"
-            app:cardCornerRadius="8dp"
-            app:strokeColor="@color/filter_oiii"
-            app:strokeWidth="1dp">
-
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" app:cardBackgroundColor="@color/surface_dark"
+            app:cardCornerRadius="8dp" app:strokeColor="@color/filter_oiii" app:strokeWidth="1dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical" android:padding="12dp">
-
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="OIII — Askar C2" android:textColor="@color/filter_oiii"
                     android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
-
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="horizontal" android:gravity="center_vertical">
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                         android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -256,7 +177,6 @@
                             android:layout_height="wrap_content" android:inputType="number"
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                         android:layout_marginStart="8dp" android:hint="Exp (s)"
@@ -267,56 +187,202 @@
                             android:layout_height="wrap_content" android:inputType="number"
                             android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView android:id="@+id/text_oiii_time"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="00:00" android:textColor="@color/filter_oiii"
-                        android:textSize="14sp" android:textStyle="bold"
-                        android:layout_marginStart="10dp" android:minWidth="48dp" />
+                    <TextView android:id="@+id/text_oiii_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/filter_oiii" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Total tiempo -->
-        <TextView
-            android:id="@+id/text_total_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Total: 00:00"
-            android:textColor="@color/accent_purple_light"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="end" />
+        <!-- SII (configurable) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_sii"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:visibility="gone"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="8dp"
+            app:strokeColor="@color/accent_purple_light" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="SII (Azufre)" android:textColor="@color/accent_purple_light"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_sii_subs" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:layout_marginStart="8dp" android:hint="Exp (s)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_sii_exp" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/text_sii_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/accent_purple_light" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Notas -->
+        <!-- L-Extreme (configurable) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_lext"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:visibility="gone"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="8dp"
+            app:strokeColor="@color/accent_purple_light" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="L-Extreme / Dual Band" android:textColor="@color/accent_purple_light"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_lext_subs" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:layout_marginStart="8dp" android:hint="Exp (s)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_lext_exp" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/text_lext_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/accent_purple_light" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Custom 1 (configurable) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_custom1"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:visibility="gone"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="8dp"
+            app:strokeColor="@color/text_secondary" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="12dp">
+                <TextView android:id="@+id/text_custom1_label" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Filtro personalizado 1"
+                    android:textColor="@color/text_secondary" android:textSize="13sp"
+                    android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_custom1_subs" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:layout_marginStart="8dp" android:hint="Exp (s)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_custom1_exp" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/text_custom1_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/text_secondary" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Custom 2 (configurable) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_custom2"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:visibility="gone"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="8dp"
+            app:strokeColor="@color/text_secondary" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="12dp">
+                <TextView android:id="@+id/text_custom2_label" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Filtro personalizado 2"
+                    android:textColor="@color/text_secondary" android:textSize="13sp"
+                    android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_custom2_subs" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:layout_marginStart="8dp" android:hint="Exp (s)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_custom2_exp" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:inputType="number"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/text_custom2_time" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="@color/text_secondary" android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginStart="10dp" android:minWidth="48dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView android:id="@+id/text_total_time"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="Total: 00:00"
+            android:textColor="@color/accent_purple_light" android:textSize="16sp"
+            android:textStyle="bold" android:gravity="end" />
+
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Notas"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/border_dark"
-            app:hintTextColor="@color/text_secondary"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Notas" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
             android:layout_marginTop="8dp">
-
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="2"
-                android:textColor="@color/text_primary" />
+                android:id="@+id/edit_notes" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:inputType="textMultiLine"
+                android:minLines="2" android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón guardar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            android:text="Guardar sesión"
-            android:textSize="15sp"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" android:layout_marginBottom="24dp"
+            android:text="Guardar sesión" android:textSize="15sp"
             app:backgroundTint="@color/accent_purple" />
 
     </LinearLayout>
