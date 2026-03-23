@@ -119,11 +119,11 @@
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Hα (siempre visible) -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_oiii"
+       <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_ha"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp" app:cardBackgroundColor="@color/surface_dark"
-            app:cardCornerRadius="8dp" app:strokeColor="@color/filter_oiii" app:strokeWidth="1dp">
+            app:cardCornerRadius="8dp" app:strokeColor="@color/filter_ha" app:strokeWidth="1dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical" android:padding="12dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
