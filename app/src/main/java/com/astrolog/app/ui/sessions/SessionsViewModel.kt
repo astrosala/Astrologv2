@@ -17,7 +17,7 @@ class SessionsViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         val db = AstroDatabase.getDatabase(app)
-        repo = AstroRepository(db.sessionDao(), db.astroObjectDao())
+        repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
     }
 
     val allSessions = repo.allSessions
