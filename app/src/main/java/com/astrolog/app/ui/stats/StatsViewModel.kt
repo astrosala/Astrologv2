@@ -27,7 +27,7 @@ class StatsViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         val db = AstroDatabase.getDatabase(app)
-        repo = AstroRepository(db.sessionDao(), db.astroObjectDao())
+        repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
         loadStats()
     }
 
