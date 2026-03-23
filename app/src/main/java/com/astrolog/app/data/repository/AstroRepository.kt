@@ -3,17 +3,19 @@ package com.astrolog.app.data.repository
 import androidx.lifecycle.LiveData
 import com.astrolog.app.data.dao.AstroObjectDao
 import com.astrolog.app.data.dao.ObjectSummary
+import com.astrolog.app.data.dao.SeasonDao
 import com.astrolog.app.data.dao.SessionDao
 import com.astrolog.app.data.entity.AstroObject
+import com.astrolog.app.data.entity.Season
 import com.astrolog.app.data.entity.Session
 
 class AstroRepository(
     private val sessionDao: SessionDao,
-    private val objectDao: AstroObjectDao
+    private val objectDao: AstroObjectDao,
+    private val seasonDao: SeasonDao
 ) {
-    // --- Sessions ---
+    // Sessions
     val allSessions: LiveData<List<Session>> = sessionDao.getAllSessions()
-
     suspend fun getAllSessionsOnce() = sessionDao.getAllSessionsOnce()
     suspend fun getSessionById(id: Long) = sessionDao.getSessionById(id)
     suspend fun insertSession(session: Session): Long = sessionDao.insert(session)
@@ -22,8 +24,6 @@ class AstroRepository(
     suspend fun deleteSession(session: Session) = sessionDao.delete(session)
     suspend fun getMaxSessionNumber() = sessionDao.maxSessionNumber() ?: 0
     suspend fun countSessions() = sessionDao.count()
-
-    // Stats
     suspend fun totalLproSubs() = sessionDao.totalLproSubs() ?: 0
     suspend fun totalLproSec() = sessionDao.totalLproSec() ?: 0
     suspend fun totalHaSubs() = sessionDao.totalHaSubs() ?: 0
@@ -33,9 +33,8 @@ class AstroRepository(
     suspend fun avgSeeing() = sessionDao.avgSeeing() ?: 0f
     suspend fun getSummaryByObject(): List<ObjectSummary> = sessionDao.getSummaryByObject()
 
-    // --- AstroObjects ---
+    // AstroObjects
     val allObjects: LiveData<List<AstroObject>> = objectDao.getAllObjects()
-
     suspend fun getAllObjectsOnce() = objectDao.getAllObjectsOnce()
     suspend fun getAllObjectNames() = objectDao.getAllObjectNames()
     suspend fun getObjectByName(name: String) = objectDao.getByName(name)
@@ -45,4 +44,16 @@ class AstroRepository(
     suspend fun deleteObject(obj: AstroObject) = objectDao.delete(obj)
     suspend fun getObjectsWithAlerts() = objectDao.getObjectsWithAlerts()
     suspend fun countObjects() = objectDao.count()
+
+    // Seasons
+    val allSeasons: LiveData<List<Season>> = seasonDao.getAllSeasons()
+    suspend fun getAllSeasonsOnce() = seasonDao.getAllSeasonsOnce()
+    suspend fun getActiveSeason() = seasonDao.getActiveSeason()
+    suspend fun insertSeason(season: Season): Long = seasonDao.insert(season)
+    suspend fun updateSeason(season: Season) = seasonDao.update(season)
+    suspend fun deleteSeason(season: Season) = seasonDao.delete(season)
+    suspend fun setActiveSeason(season: Season) {
+        seasonDao.deactivateAll()
+        seasonDao.update(season.copy(isActive = true))
+    }
 }
