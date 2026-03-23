@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/sessionsFragment">
+
+    <fragment
+        android:id="@+id/sessionsFragment"
+        android:name="com.astrolog.app.ui.sessions.SessionsFragment"
+        android:label="Sesiones"
+        tools:layout="@layout/fragment_sessions">
+        <action
+            android:id="@+id/action_sessions_to_newSession"
+            app:destination="@id/newSessionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newSessionFragment"
+        android:name="com.astrolog.app.ui.newsession.NewSessionFragment"
+        android:label="Nueva sesión"
+        tools:layout="@layout/fragment_new_session">
+        <argument
+            android:name="sessionId"
+            app:argType="long"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.astrolog.app.ui.stats.StatsFragment"
+        android:label="Estadísticas"
+        tools:layout="@layout/fragment_stats" />
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.astrolog.app.ui.calendar.CalendarFragment"
+        android:label="Calendario"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/wishlistFragment"
+        android:name="com.astrolog.app.ui.wishlist.WishlistFragment"
+        android:label="Lista de deseos"
+        tools:layout="@layout/fragment_wishlist" />
+
+</navigation>

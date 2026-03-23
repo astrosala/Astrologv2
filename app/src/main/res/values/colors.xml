@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Backgrounds -->
+    <color name="background_dark">#0D0D1F</color>
+    <color name="surface_dark">#141428</color>
+    <color name="border_dark">#2A2A4A</color>
+
+    <!-- Text -->
+    <color name="text_primary">#E0E0F0</color>
+    <color name="text_secondary">#888899</color>
+
+    <!-- Accent -->
+    <color name="accent_purple">#5349B7</color>
+    <color name="accent_purple_light">#9090FF</color>
+
+    <!-- Filtros -->
+    <color name="filter_lpro">#7EC87E</color>
+    <color name="filter_ha">#E88888</color>
+    <color name="filter_oiii">#8888E8</color>
+
+    <!-- Visibilidad -->
+    <color name="vis_optimal">#4ADE80</color>
+    <color name="vis_good">#60A5FA</color>
+    <color name="vis_low">#FBBF24</color>
+    <color name="vis_none">#555566</color>
+
+    <!-- Fondos de visibilidad -->
+    <color name="bg_optimal">#1D3A2A</color>
+    <color name="bg_good">#1A2A3A</color>
+    <color name="bg_low">#2A2A1A</color>
+    <color name="bg_none">#1A1A2A</color>
+
+    <!-- Estado wishlist -->
+    <color name="status_done_bg">#1D3A2A</color>
+    <color name="status_done_fg">#4ADE80</color>
+    <color name="status_progress_bg">#1A2A3A</color>
+    <color name="status_progress_fg">#60A5FA</color>
+    <color name="status_pending_bg">#2A2A3A</color>
+    <color name="status_pending_fg">#9090FF</color>
+
+    <!-- Otros -->
+    <color name="error_color">#E88888</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Nav bar selector -->
+    <color name="nav_item_selected">#9090FF</color>
+    <color name="nav_item_unselected">#555566</color>
+</resources>

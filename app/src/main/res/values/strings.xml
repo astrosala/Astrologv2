@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AstroLog</string>
+    <string name="sessions">Sesiones</string>
+    <string name="stats">Estadísticas</string>
+    <string name="calendar">Calendario</string>
+    <string name="wishlist">Lista de deseos</string>
+    <string name="new_session">Nueva sesión</string>
+    <string name="save">Guardar sesión</string>
+    <string name="import_excel">Importar Excel</string>
+    <string name="export_data">Exportar datos</string>
+    <string name="object_name">Objeto</string>
+    <string name="date">Fecha</string>
+    <string name="conditions">Condiciones</string>
+    <string name="notes">Notas</string>
+    <string name="seeing">Seeing</string>
+    <string name="total">Total</string>
+    <string name="no_sessions">Sin sesiones registradas\nPulsa + para añadir la primera</string>
+</resources>
