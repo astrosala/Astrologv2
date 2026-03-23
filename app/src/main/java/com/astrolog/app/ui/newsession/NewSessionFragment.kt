@@ -31,8 +31,8 @@ class NewSessionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Si venimos de edición, cargar sesión
-        if (args.sessionId > 0) {
-            viewModel.loadSession(args.sessionId)
+        if (args.sessionId > 0L) {
+            viewModel.loadSession(args.sessionId.toLong())
             binding.buttonSave.text = "Actualizar sesión"
         }
 
