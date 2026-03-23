@@ -5,6 +5,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,26 +22,52 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Configurar Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Fijar versión de Gradle compatible (8.2)
+        run: |
+          mkdir -p gradle/wrapper
+          cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.2-bin.zip
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          EOF
+
+      - name: Instalar Android SDK
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y wget unzip
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdtools.zip
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          unzip -q cmdtools.zip -d $HOME/android-sdk/cmdline-tools
+          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
+
+      - name: Aceptar licencias e instalar plataformas
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
       - name: Dar permisos a gradlew
         run: chmod +x ./gradlew
 
-      - name: Añadir Safe Args plugin (root build.gradle)
+      - name: Añadir Safe Args (root build.gradle)
         run: |
           sed -i "s|classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:\$kotlin_version\"|classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:\$kotlin_version\"\n        classpath \"androidx.navigation:navigation-safe-args-gradle-plugin:2.7.6\"|" build.gradle
 
-      - name: Añadir Safe Args plugin (app build.gradle)
+      - name: Añadir Safe Args (app build.gradle)
         run: |
           sed -i "s|id 'kotlin-kapt'|id 'kotlin-kapt'\n    id 'androidx.navigation.safeargs.kotlin'|" app/build.gradle
 
-      - name: Eliminar stubs manuales de Safe Args
+      - name: Eliminar stubs manuales Safe Args
         run: |
           rm -f app/src/main/java/com/astrolog/app/ui/sessions/SessionsFragmentDirections.kt
           rm -f app/src/main/java/com/astrolog/app/ui/newsession/NewSessionFragmentArgs.kt
 
-      - name: Cache de Gradle
+      - name: Cache Gradle
         uses: actions/cache@v4
         with:
           path: |
@@ -48,9 +77,9 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle-
 
       - name: Compilar APK debug
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Subir APK como artefacto descargable
+      - name: Subir APK
         uses: actions/upload-artifact@v4
         with:
           name: AstroLog-debug
