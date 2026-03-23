@@ -9,7 +9,9 @@ import com.astrolog.app.R
 import com.astrolog.app.data.entity.AstroObject
 import com.astrolog.app.databinding.ItemCalendarBinding
 
-class CalendarAdapter : ListAdapter<AstroObject, CalendarAdapter.ViewHolder>(DiffCallback()) {
+class CalendarAdapter(
+    private val onItemClick: (AstroObject) -> Unit
+) : ListAdapter<AstroObject, CalendarAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val b = ItemCalendarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -27,7 +29,6 @@ class CalendarAdapter : ListAdapter<AstroObject, CalendarAdapter.ViewHolder>(Dif
             b.textMay.text = obj.visibilityMay
             b.textJun.text = obj.visibilityJune
 
-            // Colorear cada celda según visibilidad
             listOf(
                 b.textMar to obj.visibilityMarch,
                 b.textAbr to obj.visibilityApril,
@@ -43,6 +44,8 @@ class CalendarAdapter : ListAdapter<AstroObject, CalendarAdapter.ViewHolder>(Dif
                 tv.setBackgroundResource(bg)
                 tv.setTextColor(tv.context.getColor(fg))
             }
+
+            b.root.setOnClickListener { onItemClick(obj) }
         }
     }
 
