@@ -2,16 +2,13 @@ package com.astrolog.app.ui.sessions
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +25,6 @@ class SessionsFragment : Fragment() {
     private val viewModel: SessionsViewModel by viewModels()
     private lateinit var adapter: SessionsAdapter
 
-    // Launchers para importar/exportar archivos (sin internet)
     private val importLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -67,13 +63,21 @@ class SessionsFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSessionsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Conectar toolbar con la Activity para que aparezca el menú
+        val toolbar = binding.toolbar
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        setHasOptionsMenu(true)
 
         // RecyclerView
         adapter = SessionsAdapter { session ->
@@ -83,15 +87,13 @@ class SessionsFragment : Fragment() {
         binding.recyclerSessions.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerSessions.adapter = adapter
 
-        // Swipe to delete
+        // Swipe para eliminar
         val swipe = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, t: RecyclerView.ViewHolder) = false
             override fun onSwiped(vh: RecyclerView.ViewHolder, direction: Int) {
                 val session = adapter.getSessionAt(vh.adapterPosition)
                 viewModel.deleteSession(session)
-                Snackbar.make(binding.root, "Sesión eliminada", Snackbar.LENGTH_LONG)
-                    .setAction("Deshacer") { /* No aplica sin undo stack, se puede añadir */ }
-                    .show()
+                Snackbar.make(binding.root, "Sesión eliminada", Snackbar.LENGTH_LONG).show()
             }
         }
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerSessions)
@@ -101,25 +103,24 @@ class SessionsFragment : Fragment() {
             binding.textEmpty.visibility = if (sessions.isEmpty()) View.VISIBLE else View.GONE
         }
 
-        // FAB
         binding.fabNewSession.setOnClickListener {
             findNavController().navigate(R.id.action_sessions_to_newSession)
         }
+    }
 
-        // Menú
-        val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_sessions, menu)
-            }
-            override fun onMenuItemSelected(item: MenuItem): Boolean {
-                return when (item.itemId) {
-                    R.id.action_import -> { showImportDialog(); true }
-                    R.id.action_export -> { showExportDialog(); true }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    @Deprecated("Deprecated in Java")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_sessions, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_import -> { showImportDialog(); true }
+            R.id.action_export -> { showExportDialog(); true }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun showImportDialog() {
