@@ -39,6 +39,9 @@ class NewSessionFragment : Fragment() {
         }
 
         // Mostrar filtros configurables según Ajustes
+        binding.cardLpro.visibility = if (viewModel.showLpro) View.VISIBLE else View.GONE
+        binding.cardHa.visibility = if (viewModel.showHa) View.VISIBLE else View.GONE
+        binding.cardOiii.visibility = if (viewModel.showOiii) View.VISIBLE else View.GONE
         binding.cardSii.visibility = if (viewModel.showSii) View.VISIBLE else View.GONE
         binding.cardLext.visibility = if (viewModel.showLext) View.VISIBLE else View.GONE
         binding.cardCustom1.visibility = if (viewModel.showCustom1) View.VISIBLE else View.GONE
