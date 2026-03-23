@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_heart"
         android:title="Deseos" />
 
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Ajustes" />
+
 </menu>
