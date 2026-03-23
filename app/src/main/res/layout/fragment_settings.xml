@@ -11,12 +11,12 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
             app:title="Ajustes" app:titleTextColor="@color/text_primary"
-            app:subtitle="Configura tus filtros" app:subtitleTextColor="@color/text_secondary" />
+            app:subtitle="Activa los filtros que usas" app:subtitleTextColor="@color/text_secondary" />
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="FILTROS ACTIVOS" android:textColor="@color/accent_purple"
-            android:textSize="11sp" android:textStyle="bold" android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="11sp" android:textStyle="bold"
+            android:layout_marginTop="8dp" android:layout_marginBottom="8dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -27,41 +27,37 @@
                 android:orientation="vertical" android:padding="12dp">
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="L-Pro"
                         android:textColor="@color/filter_lpro" android:textSize="13sp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Siempre activo" android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_lpro"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="Ha — Askar C1"
                         android:textColor="@color/filter_ha" android:textSize="13sp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Siempre activo" android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_ha"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="OIII — Askar C2"
                         android:textColor="@color/filter_oiii" android:textSize="13sp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Siempre activo" android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_oiii"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="SII (Azufre)"
                         android:textColor="@color/accent_purple_light" android:textSize="13sp" />
@@ -71,7 +67,7 @@
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="L-Extreme / Dual Band"
                         android:textColor="@color/accent_purple_light" android:textSize="13sp" />
@@ -79,6 +75,7 @@
                         android:id="@+id/switch_lext"
                         android:layout_width="wrap_content" android:layout_height="wrap_content" />
                 </LinearLayout>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -94,8 +91,7 @@
                 android:orientation="vertical" android:padding="12dp">
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="Filtro extra 1 activo"
                         android:textColor="@color/text_secondary" android:textSize="12sp" />
@@ -111,14 +107,13 @@
                     app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
                     android:layout_marginBottom="12dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_custom1_name"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="text" android:textColor="@color/text_primary" />
+                        android:id="@+id/edit_custom1_name" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:inputType="text"
+                        android:textColor="@color/text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="Filtro extra 2 activo"
                         android:textColor="@color/text_secondary" android:textSize="12sp" />
@@ -133,10 +128,11 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_custom2_name"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="text" android:textColor="@color/text_primary" />
+                        android:id="@+id/edit_custom2_name" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:inputType="text"
+                        android:textColor="@color/text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
