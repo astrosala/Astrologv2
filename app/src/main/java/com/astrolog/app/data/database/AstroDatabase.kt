@@ -1,3 +1,4 @@
+
 package com.astrolog.app.data.database
 
 import android.content.Context
@@ -81,16 +82,3 @@ abstract class AstroDatabase : RoomDatabase() {
         )
     }
 }
-```
-
-Pulsa **Commit changes**.
-
----
-
-**PASO 3 — Pantalla de Ajustes (nuevo archivo)**
-
-Ve a **Code** → carpeta `app/src/main/java/com/astrolog/app/ui/` → pulsa **"Add file"** → **"Create new file"**
-
-En el nombre escribe:
-```
-app/src/main/java/com/astrolog/app/ui/settings/SettingsFragment.kt
