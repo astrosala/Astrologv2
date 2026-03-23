@@ -42,6 +42,23 @@ jobs:
 
       - name: Dar permisos a gradlew
         run: chmod +x ./gradlew
+        - name: Crear iconos de la app
+        run: |
+          mkdir -p app/src/main/res/mipmap-hdpi
+          mkdir -p app/src/main/res/mipmap-mdpi
+          mkdir -p app/src/main/res/mipmap-xhdpi
+          mkdir -p app/src/main/res/mipmap-xxhdpi
+          mkdir -p app/src/main/res/mipmap-xxxhdpi
+          for dir in app/src/main/res/mipmap-hdpi app/src/main/res/mipmap-mdpi app/src/main/res/mipmap-xhdpi app/src/main/res/mipmap-xxhdpi app/src/main/res/mipmap-xxxhdpi; do
+            cat > $dir/ic_launcher.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@color/accent_purple"/>
+              <foreground android:drawable="@drawable/ic_star"/>
+          </adaptive-icon>
+          EOF
+            cp $dir/ic_launcher.xml $dir/ic_launcher_round.xml
+          done
 
       - name: Eliminar stubs manuales Safe Args
         run: |
