@@ -35,11 +35,13 @@ class CalendarViewModel(app: Application) : AndroidViewModel(app) {
         mar: String, abr: String, may: String, jun: String,
         filter: String
     ) = viewModelScope.launch {
-        repo.updateObject(obj.copy(
-            visibilityMarch = mar, visibilityApril = abr,
-            visibilityMay = may, visibilityJune = jun,
-            mainFilter = filter
-        ))
+        repo.updateObject(
+            obj.copy(
+                visibilityMarch = mar, visibilityApril = abr,
+                visibilityMay = may, visibilityJune = jun,
+                mainFilter = filter
+            )
+        )
         load()
     }
 }
@@ -61,11 +63,9 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         adapter = CalendarAdapter { obj -> showEditDialog(obj) }
         binding.recyclerCalendar.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerCalendar.adapter = adapter
-
         viewModel.objects.observe(viewLifecycleOwner) { adapter.submitList(it) }
         viewModel.load()
     }
@@ -73,22 +73,33 @@ class CalendarFragment : Fragment() {
     private fun showEditDialog(obj: AstroObject) {
         val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
         val visValues = arrayOf("★", "✓", "~", "—")
-
         fun indexOf(v: String) = visValues.indexOfFirst { it == v }.takeIf { it >= 0 } ?: 3
 
-        val dialogView = layoutInflater.inflate(com.astrolog.app.R.layout.dialog_edit_visibility, null)
-
-        val marSpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_edit_mar)
-        val abrSpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_edit_abr)
-        val maySpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_edit_may)
-        val junSpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_edit_jun)
+        val dialogView = layoutInflater.inflate(
+            com.astrolog.app.R.layout.dialog_edit_visibility, null
+        )
+        val marSpinner = dialogView.findViewById<android.widget.Spinner>(
+            com.astrolog.app.R.id.spinner_edit_mar
+        )
+        val abrSpinner = dialogView.findViewById<android.widget.Spinner>(
+            com.astrolog.app.R.id.spinner_edit_abr
+        )
+        val maySpinner = dialogView.findViewById<android.widget.Spinner>(
+            com.astrolog.app.R.id.spinner_edit_may
+        )
+        val junSpinner = dialogView.findViewById<android.widget.Spinner>(
+            com.astrolog.app.R.id.spinner_edit_jun
+        )
         val filterEdit = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(
             com.astrolog.app.R.id.edit_vis_filter
         )
 
-        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, visOptions)
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            visOptions
+        )
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         listOf(marSpinner, abrSpinner, maySpinner, junSpinner).forEach { it.adapter = spinnerAdapter }
 
         marSpinner.setSelection(indexOf(obj.visibilityMarch))
@@ -114,19 +125,13 @@ class CalendarFragment : Fragment() {
             .show()
     }
 
-    override fun onResume() { super.onResume(); viewModel.load() }
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+    override fun onResume() {
+        super.onResume()
+        viewModel.load()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
-```
-
-Pulsa **Commit changes**.
-
----
-
-**ARCHIVO 3 — nuevo layout `dialog_edit_visibility.xml`**
-
-Ve a `app/src/main/res/layout/` → **"Add file"** → **"Create new file"**
-
-Nombre:
-```
-dialog_edit_visibility.xml
