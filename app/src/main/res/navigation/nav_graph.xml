@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment
-        android:id="@+id/helpFragment"
-        android:name="com.astrolog.app.ui.settings.HelpFragment"
-        android:label="Ayuda"
-        tools:layout="@layout/fragment_help" />
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -54,5 +49,11 @@
         android:name="com.astrolog.app.ui.settings.SettingsFragment"
         android:label="Ajustes"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.astrolog.app.ui.settings.HelpFragment"
+        android:label="Ayuda"
+        tools:layout="@layout/fragment_help" />
 
 </navigation>
