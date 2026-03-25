@@ -17,24 +17,34 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
 class WishlistViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo: AstroRepository = run {
+    private val repo: AstroRepository
+
+    init {
         val db = AstroDatabase.getDatabase(app)
         repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
     }
 
     val allObjects = repo.allObjects
 
-    fun addObject(name: String, filter: String, alertMonths: String, alertEnabled: Boolean) = viewModelScope.launch {
+    fun addObjectWithVisibility(
+        name: String, filter: String,
+        mar: String, abr: String, may: String, jun: String
+    ) = viewModelScope.launch {
         if (name.isBlank()) return@launch
         repo.insertObject(
             AstroObject(
-                name = name,
-                mainFilter = filter,
-                status = "Pendiente",
-                alertEnabled = alertEnabled,
-                alertMonths = alertMonths
+                name = name, mainFilter = filter, status = "Pendiente",
+                visibilityMarch = mar, visibilityApril = abr,
+                visibilityMay = may, visibilityJune = jun,
+                visibilityMonth1 = mar, visibilityMonth2 = abr,
+                visibilityMonth3 = may, visibilityMonth4 = jun
             )
         )
+    }
+
+    fun addObject(name: String, filter: String) = viewModelScope.launch {
+        if (name.isBlank()) return@launch
+        repo.insertObject(AstroObject(name = name, mainFilter = filter, status = "Pendiente"))
     }
 
     fun toggleAlert(obj: AstroObject, enabled: Boolean, months: String) = viewModelScope.launch {
@@ -62,7 +72,10 @@ class WishlistFragment : Fragment() {
     private val viewModel: WishlistViewModel by viewModels()
     private lateinit var adapter: WishlistAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentWishlistBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -94,13 +107,55 @@ class WishlistFragment : Fragment() {
         val dialogView = layoutInflater.inflate(com.astrolog.app.R.layout.dialog_add_object, null)
         val nameField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_name)
         val filterField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_filter)
+
+        val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
+        val visValues = arrayOf("★", "✓", "~", "—")
+        val marSel = intArrayOf(3); val abrSel = intArrayOf(3)
+        val maySel = intArrayOf(3); val junSel = intArrayOf(3)
+
+        val marSpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_mar)
+        val abrSpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_abr)
+        val maySpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_may)
+        val junSpinner = dialogView.findViewById<android.widget.Spinner>(com.astrolog.app.R.id.spinner_jun)
+
+        val spinnerAdapter = android.widget.ArrayAdapter(
+            requireContext(), android.R.layout.simple_spinner_item, visOptions
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        listOf(marSpinner, abrSpinner, maySpinner, junSpinner).forEach { spinner ->
+            spinner?.adapter = spinnerAdapter
+            spinner?.setSelection(3)
+        }
+
+        marSpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) { marSel[0] = pos }
+            override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
+        }
+        abrSpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) { abrSel[0] = pos }
+            override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
+        }
+        maySpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) { maySel[0] = pos }
+            override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
+        }
+        junSpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) { junSel[0] = pos }
+            override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
+        }
+
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Añadir objeto")
             .setView(dialogView)
             .setPositiveButton("Añadir") { _, _ ->
                 val name = nameField?.text.toString()
                 val filter = filterField?.text.toString()
-                viewModel.addObject(name, filter, "", false)
+                viewModel.addObjectWithVisibility(
+                    name, filter,
+                    visValues[marSel[0]], visValues[abrSel[0]],
+                    visValues[maySel[0]], visValues[junSel[0]]
+                )
             }
             .setNegativeButton("Cancelar", null)
             .show()
@@ -118,9 +173,7 @@ class WishlistFragment : Fragment() {
                 val selected = months.filterIndexed { i, _ -> checked[i] }.joinToString(",")
                 viewModel.toggleAlert(obj, selected.isNotEmpty(), selected)
             }
-            .setNeutralButton("Desactivar") { _, _ ->
-                viewModel.toggleAlert(obj, false, "")
-            }
+            .setNeutralButton("Desactivar") { _, _ -> viewModel.toggleAlert(obj, false, "") }
             .setNegativeButton("Cancelar", null)
             .show()
     }
