@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.astrolog.app.databinding.FragmentSettingsBinding
+import androidx.navigation.fragment.findNavController
 
 class SettingsFragment : Fragment() {
 
@@ -34,6 +35,9 @@ class SettingsFragment : Fragment() {
         binding.editCustom1Name.setText(prefs.getString("custom1_name", "Filtro personalizado 1"))
         binding.editCustom2Name.setText(prefs.getString("custom2_name", "Filtro personalizado 2"))
 
+        binding.buttonHelp.setOnClickListener {
+            findNavController().navigate(com.astrolog.app.R.id.helpFragment)
+        }
         binding.buttonSaveSettings.setOnClickListener {
             prefs.edit().apply {
                 putBoolean("show_lpro", binding.switchLpro.isChecked)
