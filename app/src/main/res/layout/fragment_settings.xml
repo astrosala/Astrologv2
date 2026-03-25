@@ -141,7 +141,7 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-            android:text="? Instrucciones de uso"
+            android:text="Instrucciones de uso"
             app:strokeColor="@color/border_dark" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_save_settings"
