@@ -11,8 +11,9 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center_vertical"
         android:layout_marginBottom="6dp">
-        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
-            android:text="Marzo" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <TextView android:id="@+id/label_month1" android:layout_width="80dp"
+            android:layout_height="wrap_content" android:text="Mes 1"
+            android:textColor="@color/text_secondary" android:textSize="12sp" />
         <Spinner android:id="@+id/spinner_edit_mar" android:layout_width="0dp"
             android:layout_height="wrap_content" android:layout_weight="1" />
     </LinearLayout>
@@ -20,8 +21,9 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center_vertical"
         android:layout_marginBottom="6dp">
-        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
-            android:text="Abril" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <TextView android:id="@+id/label_month2" android:layout_width="80dp"
+            android:layout_height="wrap_content" android:text="Mes 2"
+            android:textColor="@color/text_secondary" android:textSize="12sp" />
         <Spinner android:id="@+id/spinner_edit_abr" android:layout_width="0dp"
             android:layout_height="wrap_content" android:layout_weight="1" />
     </LinearLayout>
@@ -29,8 +31,9 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center_vertical"
         android:layout_marginBottom="6dp">
-        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
-            android:text="Mayo" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <TextView android:id="@+id/label_month3" android:layout_width="80dp"
+            android:layout_height="wrap_content" android:text="Mes 3"
+            android:textColor="@color/text_secondary" android:textSize="12sp" />
         <Spinner android:id="@+id/spinner_edit_may" android:layout_width="0dp"
             android:layout_height="wrap_content" android:layout_weight="1" />
     </LinearLayout>
@@ -38,8 +41,9 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center_vertical"
         android:layout_marginBottom="12dp">
-        <TextView android:layout_width="48dp" android:layout_height="wrap_content"
-            android:text="Junio" android:textColor="@color/text_secondary" android:textSize="12sp" />
+        <TextView android:id="@+id/label_month4" android:layout_width="80dp"
+            android:layout_height="wrap_content" android:text="Mes 4"
+            android:textColor="@color/text_secondary" android:textSize="12sp" />
         <Spinner android:id="@+id/spinner_edit_jun" android:layout_width="0dp"
             android:layout_height="wrap_content" android:layout_weight="1" />
     </LinearLayout>
