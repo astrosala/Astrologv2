@@ -10,9 +10,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_dialog_name"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:inputType="text" android:textColor="@color/text_primary" />
+            android:id="@+id/edit_dialog_name" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:inputType="text"
+            android:textColor="@color/text_primary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,9 +22,49 @@
         app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
         android:layout_marginTop="8dp">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_dialog_filter"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:inputType="text" android:textColor="@color/text_primary"
-            android:hint="L-Pro / Askar C1 Hα / Askar C2 OIII" />
+            android:id="@+id/edit_dialog_filter" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:inputType="text"
+            android:textColor="@color/text_primary" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Visibilidad por mes" android:textColor="@color/accent_purple"
+        android:textSize="12sp" android:textStyle="bold"
+        android:layout_marginTop="12dp" android:layout_marginBottom="6dp" />
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+            android:text="Mes 1" android:textColor="@color/text_secondary" android:textSize="11sp" />
+        <Spinner android:id="@+id/spinner_mar" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+            android:text="Mes 2" android:textColor="@color/text_secondary" android:textSize="11sp" />
+        <Spinner android:id="@+id/spinner_abr" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+            android:text="Mes 3" android:textColor="@color/text_secondary" android:textSize="11sp" />
+        <Spinner android:id="@+id/spinner_may" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical">
+        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+            android:text="Mes 4" android:textColor="@color/text_secondary" android:textSize="11sp" />
+        <Spinner android:id="@+id/spinner_jun" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1" />
+    </LinearLayout>
+
 </LinearLayout>
