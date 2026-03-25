@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="16dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            app:title="Ayuda" app:titleTextColor="@color/text_primary"
+            app:subtitle="Instrucciones de uso" app:subtitleTextColor="@color/text_secondary" />
+
+        <!-- SESIONES -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="10dp"
+            app:strokeColor="@color/accent_purple" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="☆  SESIONES" android:textColor="@color/accent_purple_light"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary" android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="• Pulsa + para registrar una nueva sesión.\n• Rellena objeto, fecha, condiciones y seeing (1-5).\n• Introduce subs y exposición en segundos — el tiempo HH:MM se calcula automáticamente.\n• Activa los filtros que uses en Ajustes para que aparezcan en el formulario.\n• Desliza una sesión a la izquierda para eliminarla.\n• Pulsa una sesión para editarla." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ESTADÍSTICAS -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="10dp"
+            app:strokeColor="@color/filter_lpro" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="▦  ESTADÍSTICAS" android:textColor="@color/filter_lpro"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary" android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="• Resumen global de la temporada: sesiones, tiempo total, subs y seeing medio.\n• Tiempo acumulado desglosado por filtro.\n• Resumen por objeto con subs y horas de cada filtro.\n• Importa tu Excel desde el menú ⋮ para volcar sesiones anteriores.\n• Exporta a Excel (.xlsx) o CSV desde el mismo menú." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CALENDARIO -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="10dp"
+            app:strokeColor="@color/vis_good" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="◫  CALENDARIO" android:textColor="@color/vis_good"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary" android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="• Pulsa + Nueva para crear una temporada con nombre y 4 meses.\n• Pulsa Cambiar para activar otra temporada o eliminar una existente.\n• Pulsa cualquier objeto para editar su visibilidad (★ Óptimo / ✓ Buena / ~ Baja / — No visible) y su filtro principal.\n• Los colores indican de un vistazo qué objetos observar cada mes." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LISTA DE DESEOS -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="10dp"
+            app:strokeColor="@color/filter_ha" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="♡  LISTA DE DESEOS" android:textColor="@color/filter_ha"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary" android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="• Añade objetos que quieres fotografiar con el botón +.\n• Pulsa el estado (Pendiente / En curso / Completado) para cambiarlo.\n• Activa alertas de visibilidad por mes — recibirás una notificación a las 20:00 cuando el objeto esté en su mejor momento.\n• Las alertas funcionan sin internet." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- AJUSTES -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/surface_dark" app:cardCornerRadius="10dp"
+            app:strokeColor="@color/filter_oiii" app:strokeWidth="1dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="⚙  AJUSTES" android:textColor="@color/filter_oiii"
+                    android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary" android:textSize="12sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="• Activa o desactiva cada filtro según tu equipo — solo aparecerán los que tengas activos al registrar sesiones.\n• Los filtros L-Pro, Hα y OIII son los principales. SII y L-Extreme son opcionales.\n• Añade hasta 2 filtros personalizados con el nombre que quieras.\n• Cada usuario configura sus propios filtros de forma independiente." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
