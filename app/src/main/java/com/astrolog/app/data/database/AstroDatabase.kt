@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [Session::class, AstroObject::class, Season::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AstroDatabase : RoomDatabase() {
@@ -70,6 +70,28 @@ abstract class AstroDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Campos de referencia de subs en astro_objects
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refLproSubs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refLproExpSec INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refHaSubs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refHaExpSec INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refOiiiSubs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refOiiiExpSec INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refSiiSubs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refSiiExpSec INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refLextSubs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refLextExpSec INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refCustom1Subs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refCustom1ExpSec INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refCustom2Subs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE astro_objects ADD COLUMN refCustom2ExpSec INTEGER NOT NULL DEFAULT 0")
+                // Eliminar objetos precargados — app arranca vacía
+                db.execSQL("DELETE FROM astro_objects")
+            }
+        }
+
         fun getDatabase(context: Context): AstroDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -77,64 +99,11 @@ abstract class AstroDatabase : RoomDatabase() {
                     AstroDatabase::class.java,
                     "astrolog_database"
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                    .addCallback(PrepopulateCallback())
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
-    }
-
-    private class PrepopulateCallback : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            INSTANCE?.let { database ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    val seasonId = database.seasonDao().insert(
-                        Season(
-                            name = "Marzo-Junio 2026",
-                            month1 = "Marzo", month2 = "Abril",
-                            month3 = "Mayo", month4 = "Junio",
-                            isActive = true
-                        )
-                    )
-                    if (database.astroObjectDao().count() == 0) {
-                        database.astroObjectDao().insertAll(defaultObjects(seasonId))
-                    }
-                }
-            }
-        }
-
-        private fun defaultObjects(seasonId: Long): List<AstroObject> = listOf(
-            AstroObject(name = "Sh2-129 + OU4 Squid", seasonId = seasonId,
-                visibilityMarch = "✓", visibilityApril = "★", visibilityMay = "★", visibilityJune = "✓",
-                visibilityMonth1 = "✓", visibilityMonth2 = "★", visibilityMonth3 = "★", visibilityMonth4 = "✓",
-                mainFilter = "Askar C2 OIII"),
-            AstroObject(name = "NGC 7822 + Ced 214", seasonId = seasonId,
-                visibilityMarch = "✓", visibilityApril = "★", visibilityMay = "★", visibilityJune = "✓",
-                visibilityMonth1 = "✓", visibilityMonth2 = "★", visibilityMonth3 = "★", visibilityMonth4 = "✓",
-                mainFilter = "Askar C1 Hα"),
-            AstroObject(name = "Sh2-155 Cave Nebula", seasonId = seasonId,
-                visibilityMarch = "✓", visibilityApril = "★", visibilityMay = "★", visibilityJune = "★",
-                visibilityMonth1 = "✓", visibilityMonth2 = "★", visibilityMonth3 = "★", visibilityMonth4 = "★",
-                mainFilter = "Askar C1 Hα"),
-            AstroObject(name = "NGC 7380 Wizard Nebula", seasonId = seasonId,
-                visibilityMarch = "~", visibilityApril = "✓", visibilityMay = "★", visibilityJune = "★",
-                visibilityMonth1 = "~", visibilityMonth2 = "✓", visibilityMonth3 = "★", visibilityMonth4 = "★",
-                mainFilter = "Askar C1 Hα"),
-            AstroObject(name = "NGC 7023 Iris + IFN", seasonId = seasonId,
-                visibilityMarch = "~", visibilityApril = "✓", visibilityMay = "★", visibilityJune = "★",
-                visibilityMonth1 = "~", visibilityMonth2 = "✓", visibilityMonth3 = "★", visibilityMonth4 = "★",
-                mainFilter = "L-Pro (luna nueva)"),
-            AstroObject(name = "vdB 141 Ghost Nebula", seasonId = seasonId,
-                visibilityMarch = "~", visibilityApril = "✓", visibilityMay = "★", visibilityJune = "★",
-                visibilityMonth1 = "~", visibilityMonth2 = "✓", visibilityMonth3 = "★", visibilityMonth4 = "★",
-                mainFilter = "L-Pro (luna nueva)"),
-            AstroObject(name = "LBN 777 + IFN Tauro", seasonId = seasonId,
-                visibilityMarch = "★", visibilityApril = "★", visibilityMay = "✓", visibilityJune = "~",
-                visibilityMonth1 = "★", visibilityMonth2 = "★", visibilityMonth3 = "✓", visibilityMonth4 = "~",
-                mainFilter = "L-Pro broadband")
-        )
     }
 }
