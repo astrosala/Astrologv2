@@ -181,4 +181,123 @@ class WishlistFragment : Fragment() {
             filterField?.setText(obj.mainFilter)
             marSpinner?.setSelection(indexOf(obj.visibilityMonth1))
             abrSpinner?.setSelection(indexOf(obj.visibilityMonth2))
-            maySpinner?.setSele
+            maySpinner?.setSelection(indexOf(obj.visibilityMonth3))
+            junSpinner?.setSelection(indexOf(obj.visibilityMonth4))
+            if (obj.refLproSubs > 0) refLproSubs?.setText(obj.refLproSubs.toString())
+            if (obj.refLproExpSec > 0) refLproExp?.setText(obj.refLproExpSec.toString())
+            if (obj.refHaSubs > 0) refHaSubs?.setText(obj.refHaSubs.toString())
+            if (obj.refHaExpSec > 0) refHaExp?.setText(obj.refHaExpSec.toString())
+            if (obj.refOiiiSubs > 0) refOiiiSubs?.setText(obj.refOiiiSubs.toString())
+            if (obj.refOiiiExpSec > 0) refOiiiExp?.setText(obj.refOiiiExpSec.toString())
+            if (obj.refSiiSubs > 0) refSiiSubs?.setText(obj.refSiiSubs.toString())
+            if (obj.refSiiExpSec > 0) refSiiExp?.setText(obj.refSiiExpSec.toString())
+            if (obj.refLextSubs > 0) refLextSubs?.setText(obj.refLextSubs.toString())
+            if (obj.refLextExpSec > 0) refLextExp?.setText(obj.refLextExpSec.toString())
+            if (obj.refCustom1Subs > 0) refC1Subs?.setText(obj.refCustom1Subs.toString())
+            if (obj.refCustom1ExpSec > 0) refC1Exp?.setText(obj.refCustom1ExpSec.toString())
+            if (obj.refCustom2Subs > 0) refC2Subs?.setText(obj.refCustom2Subs.toString())
+            if (obj.refCustom2ExpSec > 0) refC2Exp?.setText(obj.refCustom2ExpSec.toString())
+        }
+
+        // Cálculo automático HH:MM de referencia
+        fun formatTime(subs: Int, exp: Int): String {
+            val sec = subs * exp
+            if (sec == 0) return "00:00"
+            return "%02d:%02d".format(sec / 3600, (sec % 3600) / 60)
+        }
+
+        fun recalcRef() {
+            val ls = refLproSubs?.text.toString().toIntOrNull() ?: 0
+            val le = refLproExp?.text.toString().toIntOrNull() ?: 0
+            val hs = refHaSubs?.text.toString().toIntOrNull() ?: 0
+            val he = refHaExp?.text.toString().toIntOrNull() ?: 0
+            val os = refOiiiSubs?.text.toString().toIntOrNull() ?: 0
+            val oe = refOiiiExp?.text.toString().toIntOrNull() ?: 0
+            val ss = refSiiSubs?.text.toString().toIntOrNull() ?: 0
+            val se = refSiiExp?.text.toString().toIntOrNull() ?: 0
+            val xs = refLextSubs?.text.toString().toIntOrNull() ?: 0
+            val xe = refLextExp?.text.toString().toIntOrNull() ?: 0
+            val c1s = refC1Subs?.text.toString().toIntOrNull() ?: 0
+            val c1e = refC1Exp?.text.toString().toIntOrNull() ?: 0
+            val c2s = refC2Subs?.text.toString().toIntOrNull() ?: 0
+            val c2e = refC2Exp?.text.toString().toIntOrNull() ?: 0
+            refLproTime?.text = formatTime(ls, le)
+            refHaTime?.text = formatTime(hs, he)
+            refOiiiTime?.text = formatTime(os, oe)
+            refSiiTime?.text = formatTime(ss, se)
+            refLextTime?.text = formatTime(xs, xe)
+            refC1Time?.text = formatTime(c1s, c1e)
+            refC2Time?.text = formatTime(c2s, c2e)
+            val totalSec = ls*le + hs*he + os*oe + ss*se + xs*xe + c1s*c1e + c2s*c2e
+            refTotalTime?.text = "Total ref: ${formatTime(totalSec / (if (totalSec > 0) 1 else 1), 1).let {
+                "%02d:%02d".format(totalSec / 3600, (totalSec % 3600) / 60)
+            }}"
+        }
+
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { recalcRef() }
+        }
+        listOf(refLproSubs, refLproExp, refHaSubs, refHaExp, refOiiiSubs, refOiiiExp,
+               refSiiSubs, refSiiExp, refLextSubs, refLextExp, refC1Subs, refC1Exp,
+               refC2Subs, refC2Exp).forEach { it?.addTextChangedListener(watcher) }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(if (existing == null) "Añadir objeto" else "Editar ${existing.name}")
+            .setView(dialogView)
+            .setPositiveButton(if (existing == null) "Añadir" else "Guardar") { _, _ ->
+                val obj = AstroObject(
+                    id = existing?.id ?: 0L,
+                    name = nameField?.text.toString(),
+                    mainFilter = filterField?.text.toString(),
+                    status = existing?.status ?: "Pendiente",
+                    alertEnabled = existing?.alertEnabled ?: false,
+                    alertMonths = existing?.alertMonths ?: "",
+                    visibilityMonth1 = visValues[marSpinner?.selectedItemPosition ?: 3],
+                    visibilityMonth2 = visValues[abrSpinner?.selectedItemPosition ?: 3],
+                    visibilityMonth3 = visValues[maySpinner?.selectedItemPosition ?: 3],
+                    visibilityMonth4 = visValues[junSpinner?.selectedItemPosition ?: 3],
+                    visibilityMarch = visValues[marSpinner?.selectedItemPosition ?: 3],
+                    visibilityApril = visValues[abrSpinner?.selectedItemPosition ?: 3],
+                    visibilityMay = visValues[maySpinner?.selectedItemPosition ?: 3],
+                    visibilityJune = visValues[junSpinner?.selectedItemPosition ?: 3],
+                    refLproSubs = refLproSubs?.text.toString().toIntOrNull() ?: 0,
+                    refLproExpSec = refLproExp?.text.toString().toIntOrNull() ?: 0,
+                    refHaSubs = refHaSubs?.text.toString().toIntOrNull() ?: 0,
+                    refHaExpSec = refHaExp?.text.toString().toIntOrNull() ?: 0,
+                    refOiiiSubs = refOiiiSubs?.text.toString().toIntOrNull() ?: 0,
+                    refOiiiExpSec = refOiiiExp?.text.toString().toIntOrNull() ?: 0,
+                    refSiiSubs = refSiiSubs?.text.toString().toIntOrNull() ?: 0,
+                    refSiiExpSec = refSiiExp?.text.toString().toIntOrNull() ?: 0,
+                    refLextSubs = refLextSubs?.text.toString().toIntOrNull() ?: 0,
+                    refLextExpSec = refLextExp?.text.toString().toIntOrNull() ?: 0,
+                    refCustom1Subs = refC1Subs?.text.toString().toIntOrNull() ?: 0,
+                    refCustom1ExpSec = refC1Exp?.text.toString().toIntOrNull() ?: 0,
+                    refCustom2Subs = refC2Subs?.text.toString().toIntOrNull() ?: 0,
+                    refCustom2ExpSec = refC2Exp?.text.toString().toIntOrNull() ?: 0
+                )
+                viewModel.saveObject(obj)
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun showAlertDialog(obj: AstroObject) {
+        val months = arrayOf("Marzo", "Abril", "Mayo", "Junio")
+        val currentMonths = obj.alertMonths.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        val checked = months.map { it in currentMonths }.toBooleanArray()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Alerta — ${obj.name}")
+            .setMultiChoiceItems(months, checked) { _, which, isChecked -> checked[which] = isChecked }
+            .setPositiveButton("Activar") { _, _ ->
+                val selected = months.filterIndexed { i, _ -> checked[i] }.joinToString(",")
+                viewModel.toggleAlert(obj, selected.isNotEmpty(), selected)
+            }
+            .setNeutralButton("Desactivar") { _, _ -> viewModel.toggleAlert(obj, false, "") }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+}
