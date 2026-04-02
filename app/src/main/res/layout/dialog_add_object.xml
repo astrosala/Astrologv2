@@ -1,70 +1,312 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="vertical" android:padding="16dp">
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Nombre del objeto"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_dialog_name" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:inputType="text"
-            android:textColor="@color/text_primary" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="Filtro principal"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
-        android:layout_marginTop="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_dialog_filter" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:inputType="text"
-            android:textColor="@color/text_primary" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Visibilidad por mes" android:textColor="@color/accent_purple"
-        android:textSize="12sp" android:textStyle="bold"
-        android:layout_marginTop="12dp" android:layout_marginBottom="6dp" />
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center_vertical"
-        android:layout_marginBottom="4dp">
-        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
-            android:text="Mes 1" android:textColor="@color/text_secondary" android:textSize="11sp" />
-        <Spinner android:id="@+id/spinner_mar" android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_weight="1" />
-    </LinearLayout>
+        android:orientation="vertical" android:padding="16dp">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center_vertical"
-        android:layout_marginBottom="4dp">
-        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
-            android:text="Mes 2" android:textColor="@color/text_secondary" android:textSize="11sp" />
-        <Spinner android:id="@+id/spinner_abr" android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_weight="1" />
-    </LinearLayout>
+        <!-- Nombre -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Nombre del objeto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_dialog_name" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:inputType="text"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center_vertical"
-        android:layout_marginBottom="4dp">
-        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
-            android:text="Mes 3" android:textColor="@color/text_secondary" android:textSize="11sp" />
-        <Spinner android:id="@+id/spinner_may" android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_weight="1" />
-    </LinearLayout>
+        <!-- Filtro principal -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Filtro principal"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_dialog_filter" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:inputType="text"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center_vertical">
-        <TextView android:layout_width="40dp" android:layout_height="wrap_content"
-            android:text="Mes 4" android:textColor="@color/text_secondary" android:textSize="11sp" />
-        <Spinner android:id="@+id/spinner_jun" android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_weight="1" />
-    </LinearLayout>
+        <!-- Visibilidad -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Visibilidad por mes" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:textStyle="bold"
+            android:layout_marginTop="12dp" android:layout_marginBottom="6dp" />
 
-</LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="4dp">
+            <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+                android:text="Mes 1" android:textColor="@color/text_secondary" android:textSize="11sp" />
+            <Spinner android:id="@+id/spinner_mar" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="4dp">
+            <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+                android:text="Mes 2" android:textColor="@color/text_secondary" android:textSize="11sp" />
+            <Spinner android:id="@+id/spinner_abr" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="4dp">
+            <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+                android:text="Mes 3" android:textColor="@color/text_secondary" android:textSize="11sp" />
+            <Spinner android:id="@+id/spinner_may" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="12dp">
+            <TextView android:layout_width="40dp" android:layout_height="wrap_content"
+                android:text="Mes 4" android:textColor="@color/text_secondary" android:textSize="11sp" />
+            <Spinner android:id="@+id/spinner_jun" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- Referencia de subs -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Referencia de subs (objetivo)" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:textStyle="bold" android:layout_marginBottom="8dp" />
+
+        <!-- L-Pro -->
+        <LinearLayout android:id="@+id/card_ref_lpro"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+            <TextView android:layout_width="52dp" android:layout_height="wrap_content"
+                android:text="L-Pro" android:textColor="@color/filter_lpro" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_lpro_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_lpro_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_lpro_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/filter_lpro" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- Hα -->
+        <LinearLayout android:id="@+id/card_ref_ha"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+            <TextView android:layout_width="52dp" android:layout_height="wrap_content"
+                android:text="Hα" android:textColor="@color/filter_ha" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_ha_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_ha_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_ha_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/filter_ha" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- OIII -->
+        <LinearLayout android:id="@+id/card_ref_oiii"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+            <TextView android:layout_width="52dp" android:layout_height="wrap_content"
+                android:text="OIII" android:textColor="@color/filter_oiii" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_oiii_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_oiii_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_oiii_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/filter_oiii" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- SII -->
+        <LinearLayout android:id="@+id/card_ref_sii"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp" android:visibility="gone">
+            <TextView android:layout_width="52dp" android:layout_height="wrap_content"
+                android:text="SII" android:textColor="@color/accent_purple_light" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_sii_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_sii_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_sii_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/accent_purple_light" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- L-Extreme -->
+        <LinearLayout android:id="@+id/card_ref_lext"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp" android:visibility="gone">
+            <TextView android:layout_width="52dp" android:layout_height="wrap_content"
+                android:text="L-Ext" android:textColor="@color/accent_purple_light" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_lext_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_lext_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_lext_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/accent_purple_light" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- Custom 1 -->
+        <LinearLayout android:id="@+id/card_ref_c1"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp" android:visibility="gone">
+            <TextView android:id="@+id/label_ref_c1" android:layout_width="52dp"
+                android:layout_height="wrap_content" android:text="C1"
+                android:textColor="@color/text_secondary" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_c1_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_c1_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_c1_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/text_secondary" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- Custom 2 -->
+        <LinearLayout android:id="@+id/card_ref_c2"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:layout_marginBottom="6dp" android:visibility="gone">
+            <TextView android:id="@+id/label_ref_c2" android:layout_width="52dp"
+                android:layout_height="wrap_content" android:text="C2"
+                android:textColor="@color/text_secondary" android:textSize="11sp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:hint="Subs" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_c2_subs" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="4dp" android:hint="Exp(s)"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/border_dark" app:hintTextColor="@color/text_secondary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_ref_c2_exp" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/text_ref_c2_time" android:layout_width="48dp"
+                android:layout_height="wrap_content" android:text="00:00"
+                android:textColor="@color/text_secondary" android:textSize="11sp"
+                android:gravity="center" android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- Total referencia -->
+        <TextView android:id="@+id/text_ref_total_time"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Total ref: 00:00"
+            android:textColor="@color/accent_purple_light" android:textSize="13sp"
+            android:textStyle="bold" android:gravity="end"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+</ScrollView>
