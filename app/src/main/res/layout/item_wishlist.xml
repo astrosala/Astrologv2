@@ -10,20 +10,32 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="vertical" android:padding="14dp">
 
+        <!-- Cabecera: nombre + estado -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:gravity="center_vertical">
 
             <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_weight="1" android:orientation="vertical">
+
                 <TextView android:id="@+id/text_wish_object_name"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textColor="@color/text_primary" android:textSize="14sp" android:textStyle="bold" />
+                    android:textColor="@color/text_primary" android:textSize="14sp"
+                    android:textStyle="bold" />
+
                 <TextView android:id="@+id/text_wish_filter"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textColor="@color/text_secondary" android:textSize="11sp" android:layout_marginTop="2dp" />
+                    android:textColor="@color/text_secondary" android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+
                 <TextView android:id="@+id/text_wish_visibility"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textColor="@color/text_secondary" android:textSize="11sp" android:layout_marginTop="2dp" />
+                    android:textColor="@color/text_secondary" android:textSize="11sp"
+                    android:layout_marginTop="2dp" />
+
+                <TextView android:id="@+id/text_wish_ref"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/accent_purple_light" android:textSize="11sp"
+                    android:layout_marginTop="3dp" android:visibility="gone" />
             </LinearLayout>
 
             <com.google.android.material.chip.Chip
@@ -33,21 +45,31 @@
                 app:chipMinHeight="28dp" />
         </LinearLayout>
 
+        <!-- Botones -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:layout_marginTop="10dp" android:gravity="center_vertical">
+            android:orientation="horizontal" android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_edit"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="Editar"
+                android:textSize="12sp" app:strokeColor="@color/border_dark" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_alert"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="☆ Alerta"
-                android:textSize="12sp" app:strokeColor="@color/border_dark" />
+                android:layout_weight="1" android:layout_marginStart="6dp"
+                android:text="☆ Alerta" android:textSize="12sp"
+                app:strokeColor="@color/border_dark" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_delete"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginStart="8dp" android:text="Eliminar"
+                android:layout_marginStart="6dp" android:text="✕"
                 android:textSize="12sp" android:textColor="@color/error_color"
                 app:strokeColor="@color/error_color" />
         </LinearLayout>
