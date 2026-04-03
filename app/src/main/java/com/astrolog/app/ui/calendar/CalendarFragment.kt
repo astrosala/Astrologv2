@@ -31,8 +31,17 @@ class CalendarViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun load() = viewModelScope.launch {
-        objects.value = repo.getAllObjectsOnce()
-        activeSeason.value = repo.getActiveSeason()
+        val season = repo.getActiveSeason()
+        activeSeason.value = season
+
+        // Filtrar objetos por temporada activa
+        val allObjects = repo.getAllObjectsOnce()
+        objects.value = if (season != null) {
+            allObjects.filter { it.seasonId == season.id }
+        } else {
+            allObjects
+        }
+
         allSeasons.value = repo.getAllSeasonsOnce()
     }
 
@@ -186,7 +195,6 @@ class CalendarFragment : Fragment() {
             com.astrolog.app.R.id.edit_vis_filter
         )
 
-        // Actualizar etiquetas con los meses de la temporada activa
         val label1 = dialogView.findViewById<android.widget.TextView>(com.astrolog.app.R.id.label_month1)
         val label2 = dialogView.findViewById<android.widget.TextView>(com.astrolog.app.R.id.label_month2)
         val label3 = dialogView.findViewById<android.widget.TextView>(com.astrolog.app.R.id.label_month3)
