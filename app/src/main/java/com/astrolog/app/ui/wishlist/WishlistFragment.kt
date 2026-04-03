@@ -9,10 +9,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.astrolog.app.data.database.AstroDatabase
 import com.astrolog.app.data.entity.AstroObject
+import com.astrolog.app.data.entity.Season
 import com.astrolog.app.data.repository.AstroRepository
 import com.astrolog.app.databinding.FragmentWishlistBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,9 +25,16 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
     private val repo: AstroRepository
     private val prefs = app.getSharedPreferences("astrolog_prefs", Context.MODE_PRIVATE)
 
+    val activeSeason = MutableLiveData<Season?>()
+
     init {
         val db = AstroDatabase.getDatabase(app)
         repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
+        loadActiveSeason()
+    }
+
+    private fun loadActiveSeason() = viewModelScope.launch {
+        activeSeason.value = repo.getActiveSeason()
     }
 
     val allObjects = repo.allObjects
@@ -229,9 +238,7 @@ class WishlistFragment : Fragment() {
             refC1Time?.text = formatTime(c1s, c1e)
             refC2Time?.text = formatTime(c2s, c2e)
             val totalSec = ls*le + hs*he + os*oe + ss*se + xs*xe + c1s*c1e + c2s*c2e
-            refTotalTime?.text = "Total ref: ${formatTime(totalSec / (if (totalSec > 0) 1 else 1), 1).let {
-                "%02d:%02d".format(totalSec / 3600, (totalSec % 3600) / 60)
-            }}"
+            refTotalTime?.text = "Total ref: ${"%02d:%02d".format(totalSec / 3600, (totalSec % 3600) / 60)}"
         }
 
         val watcher = object : TextWatcher {
@@ -247,9 +254,16 @@ class WishlistFragment : Fragment() {
             .setTitle(if (existing == null) "Añadir objeto" else "Editar ${existing.name}")
             .setView(dialogView)
             .setPositiveButton(if (existing == null) "Añadir" else "Guardar") { _, _ ->
+                // Asignar seasonId de la temporada activa al crear objeto nuevo
+                val seasonId = if (existing == null) {
+                    viewModel.activeSeason.value?.id ?: 0L
+                } else {
+                    existing.seasonId
+                }
                 val obj = AstroObject(
                     id = existing?.id ?: 0L,
                     name = nameField?.text.toString(),
+                    seasonId = seasonId,
                     mainFilter = filterField?.text.toString(),
                     status = existing?.status ?: "Pendiente",
                     alertEnabled = existing?.alertEnabled ?: false,
