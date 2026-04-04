@@ -30,11 +30,10 @@ class WishlistAdapter(
 
             
 // --- NUEVOS INDICADORES VISUALES ---
-            b.indicatorM1.text = obj.visibilityMonth1
-            b.indicatorM2.text = obj.visibilityMonth2
-            b.indicatorM3.text = obj.visibilityMonth3
-            b.indicatorM4.text = obj.visibilityMonth4
-
+            b.indicatorM1.text = obj.visibilityMonth1.ifEmpty { "—" }
+            b.indicatorM2.text = obj.visibilityMonth2.ifEmpty { "—" }
+            b.indicatorM3.text = obj.visibilityMonth3.ifEmpty { "—" }
+            b.indicatorM4.text = obj.visibilityMonth4.ifEmpty { "—" }
             // Ocultamos el texto antiguo para que no estorbe
             b.textWishVisibility.visibility = android.view.View.GONE
 
