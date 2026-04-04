@@ -21,6 +21,22 @@
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:textColor="@color/text_primary" android:textSize="14sp"
                     android:textStyle="bold" />
+                
+                <LinearLayout 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" 
+            android:layout_marginTop="2dp">
+
+            <TextView android:id="@+id/indicator_m1" android:layout_width="22dp" android:layout_height="wrap_content"
+                android:text="-" android:textSize="12sp" android:gravity="center" android:textColor="@color/accent_purple" android:textStyle="bold"/>
+            <TextView android:id="@+id/indicator_m2" android:layout_width="22dp" android:layout_height="wrap_content"
+                android:text="-" android:textSize="12sp" android:gravity="center" android:textColor="@color/accent_purple" android:textStyle="bold"/>
+            <TextView android:id="@+id/indicator_m3" android:layout_width="22dp" android:layout_height="wrap_content"
+                android:text="-" android:textSize="12sp" android:gravity="center" android:textColor="@color/accent_purple" android:textStyle="bold"/>
+            <TextView android:id="@+id/indicator_m4" android:layout_width="22dp" android:layout_height="wrap_content"
+                android:text="-" android:textSize="12sp" android:gravity="center" android:textColor="@color/accent_purple" android:textStyle="bold"/>
+        </LinearLayout>
 
                 <TextView android:id="@+id/text_wish_filter"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
