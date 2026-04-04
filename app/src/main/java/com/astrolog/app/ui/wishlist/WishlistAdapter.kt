@@ -10,6 +10,7 @@ import com.astrolog.app.data.entity.AstroObject
 import com.astrolog.app.databinding.ItemWishlistBinding
 
 class WishlistAdapter(
+    private val seasons: List<Season>, // <--- AÑADIMOS ESTA LÍNEA
     private val onStatusClick: (AstroObject) -> Unit,
     private val onEditClick: (AstroObject) -> Unit,
     private val onAlertClick: (AstroObject) -> Unit,
@@ -28,13 +29,14 @@ class WishlistAdapter(
             b.textWishObjectName.text = obj.name
             b.textWishFilter.text = obj.mainFilter.ifEmpty { "Filtro no definido" }
 
-            // Visibilidad
+            // Visibilidad Dinámica: Aquí es donde conectamos con tus meses elegidos
             b.textWishVisibility.text = buildString {
-                if (obj.visibilityMonth1.isNotEmpty() && obj.visibilityMonth1 != "—") append("M1:${obj.visibilityMonth1} ")
-                if (obj.visibilityMonth2.isNotEmpty() && obj.visibilityMonth2 != "—") append("M2:${obj.visibilityMonth2} ")
-                if (obj.visibilityMonth3.isNotEmpty() && obj.visibilityMonth3 != "—") append("M3:${obj.visibilityMonth3} ")
-                if (obj.visibilityMonth4.isNotEmpty() && obj.visibilityMonth4 != "—") append("M4:${obj.visibilityMonth4}")
-            }.trim().ifEmpty { "Sin visibilidad definida" }
+                // Estos nombres (M1, M2...) cambiarán por los reales en el siguiente paso
+                append("M1: ${obj.visibilityMonth1}   ")
+                append("M2: ${obj.visibilityMonth2}   ")
+                append("M3: ${obj.visibilityMonth3}   ")
+                append("M4: ${obj.visibilityMonth4}")
+            }.trim()
 
             // Referencia de subs
             val refParts = mutableListOf<String>()
