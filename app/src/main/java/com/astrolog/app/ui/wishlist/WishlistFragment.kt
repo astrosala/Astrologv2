@@ -120,12 +120,11 @@ class WishlistFragment : Fragment() {
             com.astrolog.app.R.layout.dialog_add_object, null
         )
 
-       // --- SOLUCIÓN DEFINITIVA: Leer el texto directo del Spinner ---
+// --- COPIA ESTO PARA SUSTITUIR LAS LÍNEAS 124 A 127 ---
     visibilityMonth1 = spinners[0]?.selectedItem?.toString() ?: "—",
     visibilityMonth2 = spinners[1]?.selectedItem?.toString() ?: "—",
     visibilityMonth3 = spinners[2]?.selectedItem?.toString() ?: "—",
     visibilityMonth4 = spinners[3]?.selectedItem?.toString() ?: "—",
-
         // 2. Cogemos la temporada activa y actualizamos los textos
         viewModel.activeSeason.value?.let { active ->
             labelM1?.text = active.month1
