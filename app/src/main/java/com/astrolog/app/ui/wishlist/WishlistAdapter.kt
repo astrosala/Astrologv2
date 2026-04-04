@@ -28,13 +28,24 @@ class WishlistAdapter(
             b.textWishObjectName.text = obj.name
             b.textWishFilter.text = obj.mainFilter.ifEmpty { "Filtro no definido" }
 
+            
+// --- NUEVOS INDICADORES VISUALES ---
+            b.indicatorM1.text = obj.visibilityMonth1
+            b.indicatorM2.text = obj.visibilityMonth2
+            b.indicatorM3.text = obj.visibilityMonth3
+            b.indicatorM4.text = obj.visibilityMonth4
+
+            // Ocultamos el texto antiguo para que no estorbe
+            b.textWishVisibility.visibility = android.view.View.GONE
+
+            
             // Visibilidad
-            b.textWishVisibility.text = buildString {
-                if (obj.visibilityMonth1.isNotEmpty() && obj.visibilityMonth1 != "—") append("M1:${obj.visibilityMonth1} ")
-                if (obj.visibilityMonth2.isNotEmpty() && obj.visibilityMonth2 != "—") append("M2:${obj.visibilityMonth2} ")
-                if (obj.visibilityMonth3.isNotEmpty() && obj.visibilityMonth3 != "—") append("M3:${obj.visibilityMonth3} ")
-                if (obj.visibilityMonth4.isNotEmpty() && obj.visibilityMonth4 != "—") append("M4:${obj.visibilityMonth4}")
-            }.trim().ifEmpty { "Sin visibilidad definida" }
+            //b.textWishVisibility.text = buildString {
+                //if (obj.visibilityMonth1.isNotEmpty() && obj.visibilityMonth1 != "—") append("M1:${obj.visibilityMonth1} ")
+                //if (obj.visibilityMonth2.isNotEmpty() && obj.visibilityMonth2 != "—") append("M2:${obj.visibilityMonth2} ")
+                //if (obj.visibilityMonth3.isNotEmpty() && obj.visibilityMonth3 != "—") append("M3:${obj.visibilityMonth3} ")
+                //if (obj.visibilityMonth4.isNotEmpty() && obj.visibilityMonth4 != "—") append("M4:${obj.visibilityMonth4}")
+            //}.trim().ifEmpty { "Sin visibilidad definida" }
 
             // Referencia de subs
             val refParts = mutableListOf<String>()
