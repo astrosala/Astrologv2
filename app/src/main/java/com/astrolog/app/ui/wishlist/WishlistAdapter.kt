@@ -7,18 +7,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.astrolog.app.R
 import com.astrolog.app.data.entity.AstroObject
+import com.astrolog.app.data.entity.Season
 import com.astrolog.app.databinding.ItemWishlistBinding
 
-// 1. La cabecera DEBE tener "private val seasons: List<com.astrolog.app.data.entity.Season>"
 class WishlistAdapter(
-    private val seasons: List<com.astrolog.app.data.entity.Season>, 
+    private val seasons: List<Season>,
     private val onStatusClick: (AstroObject) -> Unit,
     private val onEditClick: (AstroObject) -> Unit,
     private val onAlertClick: (AstroObject) -> Unit,
     private val onDeleteClick: (AstroObject) -> Unit
 ) : ListAdapter<AstroObject, WishlistAdapter.ViewHolder>(DiffCallback()) {
 
-    // ... (onCreateViewHolder y onBindViewHolder no se tocan) ...
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val b = ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(b)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
 
     inner class ViewHolder(private val b: ItemWishlistBinding) : RecyclerView.ViewHolder(b.root) {
         fun bind(obj: AstroObject) {
@@ -29,7 +34,6 @@ class WishlistAdapter(
             val mySeason = seasons.find { it.id == obj.seasonId }
 
             b.textWishVisibility.text = buildString {
-                // Usamos los nombres guardados en Season.kt (month1, month2...)
                 val m1 = mySeason?.month1?.take(3) ?: "M1"
                 val m2 = mySeason?.month2?.take(3) ?: "M2"
                 val m3 = mySeason?.month3?.take(3) ?: "M3"
@@ -40,11 +44,6 @@ class WishlistAdapter(
                 append("$m3: ${obj.visibilityMonth3}   ")
                 append("$m4: ${obj.visibilityMonth4}")
             }.trim()
-
-            // ... (el resto del código de botones y estados igual que antes) ...
-        }
-    }
-}
 
             // Referencia de subs
             val refParts = mutableListOf<String>()
