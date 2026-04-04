@@ -17,7 +17,7 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
 
     val activeSeason = MutableLiveData<Season?>()
     val allSeasons: MutableLiveData<List<Season>> = MutableLiveData()
-    val allObjects = AstroDatabase.getDatabase(app).astroObjectDao().getAllObjects() // Referencia directa para simplificar
+    val allObjects = repo.allObjects
 
     init {
         val db = AstroDatabase.getDatabase(app)
