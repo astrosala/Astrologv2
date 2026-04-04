@@ -51,12 +51,13 @@ class WishlistFragment : Fragment() {
     private fun showObjectDialog(existing: AstroObject?) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_object, null)
 
-        // Inicialización de Vistas
+        // 1. Referencias de Vistas Generales
         val nameField = dialogView.findViewById<TextInputEditText>(R.id.edit_dialog_name)
         val filterField = dialogView.findViewById<TextInputEditText>(R.id.edit_dialog_filter)
         val seasonSpinner = dialogView.findViewById<Spinner>(R.id.spinner_season_selector)
+        val totalText = dialogView.findViewById<TextView>(R.id.text_ref_total_time)
 
-        // MESES DINÁMICOS: Lógica de selección "a placer"
+        // 2. Lógica de Meses Dinámicos
         val mesesAño = arrayOf("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
         val labels = listOf(
             dialogView.findViewById<TextView>(R.id.label_month1),
@@ -69,14 +70,12 @@ class WishlistFragment : Fragment() {
             label?.setOnClickListener {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Seleccionar mes")
-                    .setItems(mesesAño) { _, which ->
-                        label.text = mesesAño[which]
-                    }
+                    .setItems(mesesAño) { _, which -> label.text = mesesAño[which] }
                     .show()
             }
         }
 
-        // Configurar Spinners de Visibilidad (★, ✓, ~, —)
+        // 3. Configurar Spinners de Visibilidad (Estrellas)
         val visValues = arrayOf("★", "✓", "~", "—")
         val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
         val spinners = listOf<Spinner?>(
@@ -88,15 +87,11 @@ class WishlistFragment : Fragment() {
 
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, visOptions)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinners.forEach { s ->
-            s?.adapter = spinnerAdapter
-            s?.setSelection(3) // Por defecto: No visible
-        }
+        spinners.forEach { it?.adapter = spinnerAdapter }
 
-        // Configurar selector de temporadas (Sincronizar nombres de meses si se elige una)
+        // 4. Temporadas (Sincronización inicial)
         val seasons = viewModel.allSeasons.value ?: emptyList()
         val sAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, seasons.map { it.name })
-        sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         seasonSpinner?.adapter = sAdapter
 
         seasonSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -111,46 +106,80 @@ class WishlistFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        // --- REFERENCIAS DE TIEMPO Y FILTROS ---
-        val editLproSubs = dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lpro_subs)
-        val editLproExp = dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lpro_exp)
-        val textLproTime = dialogView.findViewById<TextView>(R.id.text_ref_lpro_time)
-        // (Añadir aquí el resto de filtros Ha, OIII siguiendo el mismo patrón si quieres ver el tiempo parcial)
-
-        val totalText = dialogView.findViewById<TextView>(R.id.text_ref_total_time)
+        // 5. Referencias de Filtros (Carga de datos y cálculos)
+        val refs = mapOf(
+            "lpro" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lpro_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lpro_exp)),
+            "ha" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_ha_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_ha_exp)),
+            "oiii" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_oiii_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_oiii_exp)),
+            "sii" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_sii_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_sii_exp)),
+            "lext" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lext_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lext_exp)),
+            "c1" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_c1_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_c1_exp)),
+            "c2" to Pair(dialogView.findViewById<TextInputEditText>(R.id.edit_ref_c2_subs), dialogView.findViewById<TextInputEditText>(R.id.edit_ref_c2_exp))
+        )
 
         fun updateTotals() {
-            val s1 = editLproSubs?.text.toString().toIntOrNull() ?: 0
-            val e1 = editLproExp?.text.toString().toIntOrNull() ?: 0
-            val totalSec = s1 * e1 // Sumar aquí el resto de filtros...
+            var totalSec = 0
+            refs.values.forEach { (s, e) ->
+                val subs = s?.text.toString().toIntOrNull() ?: 0
+                val exp = e?.text.toString().toIntOrNull() ?: 0
+                totalSec += (subs * exp)
+            }
             totalText?.text = "Total ref: ${"%02d:%02d".format(totalSec / 3600, (totalSec % 3600) / 60)}"
         }
 
         val watcher = object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) { updateTotals() }
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-        }
-        editLproSubs?.addTextChangedListener(watcher)
-        editLproExp?.addTextChangedListener(watcher)
-
-        // Cargar datos si editamos
-        if (existing != null) {
-            nameField?.setText(existing.name)
-            filterField?.setText(existing.mainFilter)
-            // Aquí cargarías el resto de valores...
+            override fun afterTextChanged(s: Editable?) { updateTotals() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
 
+        refs.values.forEach { (s, e) -> 
+            s?.addTextChangedListener(watcher)
+            e?.addTextChangedListener(watcher)
+        }
+
+        // 6. Cargar datos existentes
+        existing?.let { obj ->
+            nameField?.setText(obj.name)
+            filterField?.setText(obj.mainFilter)
+            spinners[0]?.setSelection(visValues.indexOf(obj.visibilityMonth1).coerceAtLeast(0))
+            spinners[1]?.setSelection(visValues.indexOf(obj.visibilityMonth2).coerceAtLeast(0))
+            spinners[2]?.setSelection(visValues.indexOf(obj.visibilityMonth3).coerceAtLeast(0))
+            spinners[3]?.setSelection(visValues.indexOf(obj.visibilityMonth4).coerceAtLeast(0))
+            
+            // Cargar Subs/Exp
+            refs["lpro"]?.first?.setText(if(obj.refLproSubs > 0) obj.refLproSubs.toString() else "")
+            refs["lpro"]?.second?.setText(if(obj.refLproExpSec > 0) obj.refLproExpSec.toString() else "")
+            refs["ha"]?.first?.setText(if(obj.refHaSubs > 0) obj.refHaSubs.toString() else "")
+            refs["ha"]?.second?.setText(if(obj.refHaExpSec > 0) obj.refHaExpSec.toString() else "")
+            refs["oiii"]?.first?.setText(if(obj.refOiiiSubs > 0) obj.refOiiiSubs.toString() else "")
+            refs["oiii"]?.second?.setText(if(obj.refOiiiExpSec > 0) obj.refOiiiExpSec.toString() else "")
+            // (Añadir el resto de filtros si es necesario cargar SII, Lext, etc.)
+            updateTotals()
+        }
+
+        // 7. Guardado Final
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(if (existing == null) "Añadir objeto" else "Editar")
             .setView(dialogView)
             .setPositiveButton("Guardar") { _, _ ->
-                // Lógica de guardado simplificada
+                val selectedSeasonPos = seasonSpinner?.selectedItemPosition ?: -1
+                val sId = if (selectedSeasonPos >= 0 && seasons.isNotEmpty()) seasons[selectedSeasonPos].id else 0L
+
                 val obj = (existing ?: AstroObject(name = "")).copy(
                     name = nameField?.text.toString(),
                     mainFilter = filterField?.text.toString(),
-                    visibilityMonth1 = visValues[spinners[0]?.selectedItemPosition ?: 3]
-                    // Mapear aquí el resto de campos para la DB
+                    seasonId = sId,
+                    visibilityMonth1 = visValues[spinners[0]?.selectedItemPosition ?: 3],
+                    visibilityMonth2 = visValues[spinners[1]?.selectedItemPosition ?: 3],
+                    visibilityMonth3 = visValues[spinners[2]?.selectedItemPosition ?: 3],
+                    visibilityMonth4 = visValues[spinners[3]?.selectedItemPosition ?: 3],
+                    refLproSubs = refs["lpro"]?.first?.text.toString().toIntOrNull() ?: 0,
+                    refLproExpSec = refs["lpro"]?.second?.text.toString().toIntOrNull() ?: 0,
+                    refHaSubs = refs["ha"]?.first?.text.toString().toIntOrNull() ?: 0,
+                    refHaExpSec = refs["ha"]?.second?.text.toString().toIntOrNull() ?: 0,
+                    refOiiiSubs = refs["oiii"]?.first?.text.toString().toIntOrNull() ?: 0,
+                    refOiiiExpSec = refs["oiii"]?.second?.text.toString().toIntOrNull() ?: 0
                 )
                 viewModel.saveObject(obj)
             }
@@ -158,7 +187,31 @@ class WishlistFragment : Fragment() {
             .show()
     }
 
-    private fun showAlertDialog(obj: AstroObject) { /* Lógica de alertas */ }
+    private fun showAlertDialog(obj: AstroObject) {
+        val mySeason = viewModel.allSeasons.value?.find { it.id == obj.seasonId }
+        val months = arrayOf(
+            mySeason?.month1 ?: "Mes 1",
+            mySeason?.month2 ?: "Mes 2",
+            mySeason?.month3 ?: "Mes 3",
+            mySeason?.month4 ?: "Mes 4"
+        )
+        val currentMonths = obj.alertMonths.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        val checked = months.map { it in currentMonths }.toBooleanArray()
 
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Alerta — ${obj.name}")
+            .setMultiChoiceItems(months, checked) { _, which, isChecked -> checked[which] = isChecked }
+            .setPositiveButton("Activar") { _, _ ->
+                val selected = months.filterIndexed { i, _ -> checked[i] }.joinToString(",")
+                viewModel.toggleAlert(obj, selected.isNotEmpty(), selected)
+            }
+            .setNeutralButton("Desactivar") { _, _ -> viewModel.toggleAlert(obj, false, "") }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
