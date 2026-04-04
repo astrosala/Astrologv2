@@ -120,12 +120,11 @@ class WishlistFragment : Fragment() {
             com.astrolog.app.R.layout.dialog_add_object, null
         )
 
-        // --- AQUÍ EMPIEZA EL CAMBIO ---
-        // 1. Buscamos los "carteles" que creamos en el XML
-        val labelM1 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month1)
-        val labelM2 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month2)
-        val labelM3 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month3)
-        val labelM4 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month4)
+       // --- SOLUCIÓN DEFINITIVA: Leer el texto directo del Spinner ---
+    visibilityMonth1 = spinners[0]?.selectedItem?.toString() ?: "—",
+    visibilityMonth2 = spinners[1]?.selectedItem?.toString() ?: "—",
+    visibilityMonth3 = spinners[2]?.selectedItem?.toString() ?: "—",
+    visibilityMonth4 = spinners[3]?.selectedItem?.toString() ?: "—",
 
         // 2. Cogemos la temporada activa y actualizamos los textos
         viewModel.activeSeason.value?.let { active ->
