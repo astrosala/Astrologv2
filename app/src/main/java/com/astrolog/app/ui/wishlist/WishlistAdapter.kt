@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.astrolog.app.R
 import com.astrolog.app.data.entity.AstroObject
+import com.astrolog.app.data.entity.Season // Asegúrate de que este import existe
 import com.astrolog.app.databinding.ItemWishlistBinding
 
 class WishlistAdapter(
@@ -15,6 +16,14 @@ class WishlistAdapter(
     private val onAlertClick: (AstroObject) -> Unit,
     private val onDeleteClick: (AstroObject) -> Unit
 ) : ListAdapter<AstroObject, WishlistAdapter.ViewHolder>(DiffCallback()) {
+
+    // Lista interna para guardar las temporadas y poder traducir IDs a nombres de meses
+    private var seasons: List<Season> = emptyList()
+
+    fun setSeasons(newSeasons: List<Season>) {
+        this.seasons = newSeasons
+        notifyDataSetChanged() // Refrescamos para aplicar los nombres de meses
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val b = ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,36 +37,30 @@ class WishlistAdapter(
             b.textWishObjectName.text = obj.name
             b.textWishFilter.text = obj.mainFilter.ifEmpty { "Filtro no definido" }
 
+            // --- TRADUCCIÓN DE MESES ---
+            val mySeason = seasons.find { it.id == obj.seasonId }
             
-// --- NUEVOS INDICADORES VISUALES (PASO A PASO) ---
-            
-            // 1. Nos aseguramos de que los 4 TextView sean VISIBLES en el diseño
-            b.indicatorM1.visibility = android.view.View.VISIBLE
-            b.indicatorM2.visibility = android.view.View.VISIBLE
-            b.indicatorM3.visibility = android.view.View.VISIBLE
-            b.indicatorM4.visibility = android.view.View.VISIBLE
+            // Asignamos el nombre del mes si existe la temporada, si no, dejamos "—"
+            b.labelMonth1.text = mySeason?.month1 ?: "—"
+            b.labelMonth2.text = mySeason?.month2 ?: "—"
+            b.labelMonth3.text = mySeason?.month3 ?: "—"
+            b.labelMonth4.text = mySeason?.month4 ?: "—"
 
-            // 2. Asignamos el texto. Si 'visibilityMonth1' es nulo o está vacío, ponemos "-"
-            b.indicatorM1.text = if (obj.visibilityMonth1.isNullOrBlank()) "-" else obj.visibilityMonth1
-            b.indicatorM2.text = if (obj.visibilityMonth2.isNullOrBlank()) "-" else obj.visibilityMonth2
-            b.indicatorM3.text = if (obj.visibilityMonth3.isNullOrBlank()) "-" else obj.visibilityMonth3
-            b.indicatorM4.text = if (obj.visibilityMonth4.isNullOrBlank()) "-" else obj.visibilityMonth4
+            // Indicadores de estrellas/visibilidad
+            b.indicatorM1.text = if (obj.visibilityMonth1.isNullOrBlank()) "—" else obj.visibilityMonth1
+            b.indicatorM2.text = if (obj.visibilityMonth2.isNullOrBlank()) "—" else obj.visibilityMonth2
+            b.indicatorM3.text = if (obj.visibilityMonth3.isNullOrBlank()) "—" else obj.visibilityMonth3
+            b.indicatorM4.text = if (obj.visibilityMonth4.isNullOrBlank()) "—" else obj.visibilityMonth4
 
-            // 3. Ocultamos el campo de texto viejo para que no haya duplicados
+            // Ocultamos el campo viejo
             b.textWishVisibility.visibility = android.view.View.GONE
             
-            // --- FIN DE LOS INDICADORES ---
-
-            // Referencia de subs
+            // ... resto del código de referencias (L-Pro, Ha, etc.) ...
             val refParts = mutableListOf<String>()
             if (obj.refLproSubs > 0) refParts.add("L-Pro: ${obj.refLproSubs}×${obj.refLproExpSec}s")
             if (obj.refHaSubs > 0) refParts.add("Hα: ${obj.refHaSubs}×${obj.refHaExpSec}s")
             if (obj.refOiiiSubs > 0) refParts.add("OIII: ${obj.refOiiiSubs}×${obj.refOiiiExpSec}s")
-            if (obj.refSiiSubs > 0) refParts.add("SII: ${obj.refSiiSubs}×${obj.refSiiExpSec}s")
-            if (obj.refLextSubs > 0) refParts.add("L-Ext: ${obj.refLextSubs}×${obj.refLextExpSec}s")
-            if (obj.refCustom1Subs > 0) refParts.add("C1: ${obj.refCustom1Subs}×${obj.refCustom1ExpSec}s")
-            if (obj.refCustom2Subs > 0) refParts.add("C2: ${obj.refCustom2Subs}×${obj.refCustom2ExpSec}s")
-
+            
             if (refParts.isNotEmpty()) {
                 b.textWishRef.visibility = android.view.View.VISIBLE
                 b.textWishRef.text = "Ref: ${refParts.joinToString(" · ")}  →  ${obj.refTotalTime}"
@@ -65,7 +68,7 @@ class WishlistAdapter(
                 b.textWishRef.visibility = android.view.View.GONE
             }
 
-            // Estado
+            // Estado y Clics
             val (bgColor, fgColor) = when (obj.status) {
                 "Completado" -> R.color.status_done_bg to R.color.status_done_fg
                 "En curso" -> R.color.status_progress_bg to R.color.status_progress_fg
