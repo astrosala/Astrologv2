@@ -51,6 +51,10 @@ class WishlistFragment : Fragment() {
         viewModel.allObjects.observe(viewLifecycleOwner) { list -> 
             adapter.submitList(list) 
         }
+
+        viewModel.allSeasons.observe(viewLifecycleOwner) { seasons ->
+            adapter.setSeasons(seasons)
+        }
         
         binding.fabAddObject.setOnClickListener { showObjectDialog(null) }
     }
