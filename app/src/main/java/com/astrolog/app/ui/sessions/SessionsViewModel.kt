@@ -21,6 +21,7 @@ class SessionsViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     val allSessions = repo.allSessions
+    val allObjects = repo.allObjects
 
     fun deleteSession(session: Session) = viewModelScope.launch {
         repo.deleteSession(session)
