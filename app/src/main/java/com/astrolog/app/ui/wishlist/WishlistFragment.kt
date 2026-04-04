@@ -93,12 +93,11 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         binding.recyclerWishlist.layoutManager = LinearLayoutManager(requireContext())
 
-        // Observamos las temporadas: cuando lleguen, creamos o actualizamos el adaptador
+        // Escuchamos a las temporadas. Cuando GitHub nos las dé, creamos el adaptador.
         viewModel.allSeasons.observe(viewLifecycleOwner) { seasonsList ->
             
-            // Creamos el adaptador pasándole las temporadas reales
             adapter = WishlistAdapter(
-                seasons = seasonsList,
+                seasons = seasonsList, // <-- IMPORTANTE: Aquí pasamos la lista
                 onStatusClick = { viewModel.cycleStatus(it) },
                 onEditClick = { obj -> showObjectDialog(obj) },
                 onAlertClick = { obj -> showAlertDialog(obj) },
@@ -113,14 +112,14 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             )
             binding.recyclerWishlist.adapter = adapter
             
-            // Una vez que el adaptador existe, le pasamos los objetos
+            // Si ya hay objetos cargados, los mostramos
             viewModel.allObjects.value?.let { adapter.submitList(it) }
         }
 
-        // Seguimos observando los objetos para cuando añadas nuevos
-        viewModel.allObjects.observe(viewLifecycleOwner) { 
+        // Si los objetos cambian, actualizamos la lista
+        viewModel.allObjects.observe(viewLifecycleOwner) { listaDeObjetos ->
             if (::adapter.isInitialized) {
-                adapter.submitList(it)
+                adapter.submitList(listaDeObjetos)
             }
         }
 
