@@ -9,6 +9,7 @@ import com.astrolog.app.R
 import com.astrolog.app.data.entity.AstroObject
 import com.astrolog.app.databinding.ItemWishlistBinding
 
+// 1. La cabecera DEBE tener "private val seasons: List<com.astrolog.app.data.entity.Season>"
 class WishlistAdapter(
     private val seasons: List<com.astrolog.app.data.entity.Season>, 
     private val onStatusClick: (AstroObject) -> Unit,
@@ -17,24 +18,19 @@ class WishlistAdapter(
     private val onDeleteClick: (AstroObject) -> Unit
 ) : ListAdapter<AstroObject, WishlistAdapter.ViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val b = ItemWishlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(b)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
+    // ... (onCreateViewHolder y onBindViewHolder no se tocan) ...
 
     inner class ViewHolder(private val b: ItemWishlistBinding) : RecyclerView.ViewHolder(b.root) {
         fun bind(obj: AstroObject) {
             b.textWishObjectName.text = obj.name
             b.textWishFilter.text = obj.mainFilter.ifEmpty { "Filtro no definido" }
 
-            // Buscamos la temporada de este objeto para sacar los nombres de los meses
+            // Buscamos la temporada para poner nombres reales a los meses
             val mySeason = seasons.find { it.id == obj.seasonId }
 
-            // Visibilidad Dinámica con nombres reales
             b.textWishVisibility.text = buildString {
-                val m1 = mySeason?.month1?.take(3) ?: "M1" // .take(3) corta "Marzo" a "Mar"
+                // Usamos los nombres guardados en Season.kt (month1, month2...)
+                val m1 = mySeason?.month1?.take(3) ?: "M1"
                 val m2 = mySeason?.month2?.take(3) ?: "M2"
                 val m3 = mySeason?.month3?.take(3) ?: "M3"
                 val m4 = mySeason?.month4?.take(3) ?: "M4"
@@ -44,6 +40,11 @@ class WishlistAdapter(
                 append("$m3: ${obj.visibilityMonth3}   ")
                 append("$m4: ${obj.visibilityMonth4}")
             }.trim()
+
+            // ... (el resto del código de botones y estados igual que antes) ...
+        }
+    }
+}
 
             // Referencia de subs
             val refParts = mutableListOf<String>()
