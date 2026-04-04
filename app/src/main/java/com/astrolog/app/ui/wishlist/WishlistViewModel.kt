@@ -2,9 +2,7 @@ package com.astrolog.app.ui.wishlist
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.astrolog.app.data.database.AstroDatabase
 import com.astrolog.app.data.entity.AstroObject
 import com.astrolog.app.data.entity.Season
@@ -17,11 +15,17 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
 
     val activeSeason = MutableLiveData<Season?>()
     val allSeasons: MutableLiveData<List<Season>> = MutableLiveData()
-    val allObjects = repo.allObjects
+    
+    // Declaramos la variable pero la inicializamos en el init
+    val allObjects: LiveData<List<AstroObject>>
 
     init {
         val db = AstroDatabase.getDatabase(app)
         repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
+        
+        // Ahora sí, inicializamos después de tener el repo listo
+        allObjects = repo.allObjects
+        
         loadData()
     }
 
