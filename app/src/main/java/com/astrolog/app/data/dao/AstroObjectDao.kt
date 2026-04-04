@@ -9,7 +9,10 @@ interface AstroObjectDao {
 
     @Query("SELECT * FROM astro_objects ORDER BY name ASC")
     fun getAllObjects(): LiveData<List<AstroObject>>
-
+    
+    @Query("SELECT * FROM astro_objects WHERE seasonId = :sId ORDER BY name ASC")
+    fun getObjectsBySeason(sId: Long): LiveData<List<AstroObject>>
+    
     @Query("SELECT * FROM astro_objects ORDER BY name ASC")
     suspend fun getAllObjectsOnce(): List<AstroObject>
 
