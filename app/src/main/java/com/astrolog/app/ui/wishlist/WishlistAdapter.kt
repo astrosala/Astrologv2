@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.astrolog.app.R
 import com.astrolog.app.data.entity.AstroObject
-import com.astrolog.app.data.entity.Season // Asegúrate de que este import existe
+import com.astrolog.app.data.entity.Season
 import com.astrolog.app.databinding.ItemWishlistBinding
 
 class WishlistAdapter(
@@ -17,12 +17,12 @@ class WishlistAdapter(
     private val onDeleteClick: (AstroObject) -> Unit
 ) : ListAdapter<AstroObject, WishlistAdapter.ViewHolder>(DiffCallback()) {
 
-    // Lista interna para guardar las temporadas y poder traducir IDs a nombres de meses
+    // Lista para guardar las temporadas y saber los nombres de los meses
     private var seasons: List<Season> = emptyList()
 
     fun setSeasons(newSeasons: List<Season>) {
         this.seasons = newSeasons
-        notifyDataSetChanged() // Refrescamos para aplicar los nombres de meses
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,25 +37,19 @@ class WishlistAdapter(
             b.textWishObjectName.text = obj.name
             b.textWishFilter.text = obj.mainFilter.ifEmpty { "Filtro no definido" }
 
-            // --- TRADUCCIÓN DE MESES ---
+            // Buscamos la temporada para saber qué meses mostrar
             val mySeason = seasons.find { it.id == obj.seasonId }
             
-            // Asignamos el nombre del mes si existe la temporada, si no, dejamos "—"
-            b.labelMonth1.text = mySeason?.month1 ?: "—"
-            b.labelMonth2.text = mySeason?.month2 ?: "—"
-            b.labelMonth3.text = mySeason?.month3 ?: "—"
-            b.labelMonth4.text = mySeason?.month4 ?: "—"
-
-            // Indicadores de estrellas/visibilidad
+            // NOTA: Si quieres que se vean los nombres de los meses (Mar, Abr...) 
+            // debes añadirlos al XML. Por ahora usamos los indicadores que ya tienes:
             b.indicatorM1.text = if (obj.visibilityMonth1.isNullOrBlank()) "—" else obj.visibilityMonth1
             b.indicatorM2.text = if (obj.visibilityMonth2.isNullOrBlank()) "—" else obj.visibilityMonth2
             b.indicatorM3.text = if (obj.visibilityMonth3.isNullOrBlank()) "—" else obj.visibilityMonth3
             b.indicatorM4.text = if (obj.visibilityMonth4.isNullOrBlank()) "—" else obj.visibilityMonth4
 
-            // Ocultamos el campo viejo
             b.textWishVisibility.visibility = android.view.View.GONE
-            
-            // ... resto del código de referencias (L-Pro, Ha, etc.) ...
+
+            // Referencia de subs
             val refParts = mutableListOf<String>()
             if (obj.refLproSubs > 0) refParts.add("L-Pro: ${obj.refLproSubs}×${obj.refLproExpSec}s")
             if (obj.refHaSubs > 0) refParts.add("Hα: ${obj.refHaSubs}×${obj.refHaExpSec}s")
@@ -68,7 +62,7 @@ class WishlistAdapter(
                 b.textWishRef.visibility = android.view.View.GONE
             }
 
-            // Estado y Clics
+            // Estado
             val (bgColor, fgColor) = when (obj.status) {
                 "Completado" -> R.color.status_done_bg to R.color.status_done_fg
                 "En curso" -> R.color.status_progress_bg to R.color.status_progress_fg
