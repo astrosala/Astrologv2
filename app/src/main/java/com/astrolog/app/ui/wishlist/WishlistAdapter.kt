@@ -17,11 +17,11 @@ class WishlistAdapter(
     private val onDeleteClick: (AstroObject) -> Unit
 ) : ListAdapter<AstroObject, WishlistAdapter.ViewHolder>(DiffCallback()) {
 
-    // Lista para guardar las temporadas y saber los nombres de los meses
-    private var seasons: List<Season> = emptyList()
+    // Almacén de temporadas para traducir IDs a nombres de meses 
+    private var seasonsList: List<Season> = emptyList()
 
-    fun setSeasons(newSeasons: List<Season>) {
-        this.seasons = newSeasons
+    fun setSeasons(seasons: List<Season>) {
+        this.seasonsList = seasons
         notifyDataSetChanged()
     }
 
@@ -37,24 +37,25 @@ class WishlistAdapter(
             b.textWishObjectName.text = obj.name
             b.textWishFilter.text = obj.mainFilter.ifEmpty { "Filtro no definido" }
 
-            // Buscamos la temporada para saber qué meses mostrar
-            val mySeason = seasons.find { it.id == obj.seasonId }
-            
-            // NOTA: Si quieres que se vean los nombres de los meses (Mar, Abr...) 
-            // debes añadirlos al XML. Por ahora usamos los indicadores que ya tienes:
+            // Buscamos si existe la temporada para este objeto
+            val mySeason = seasonsList.find { it.id == obj.seasonId }
+
+            // Actualizamos los indicadores de visibilidad (estrellas/rayas) 
+            // Nota: Se asume que indicatorM1 etc. existen en tu XML
             b.indicatorM1.text = if (obj.visibilityMonth1.isNullOrBlank()) "—" else obj.visibilityMonth1
             b.indicatorM2.text = if (obj.visibilityMonth2.isNullOrBlank()) "—" else obj.visibilityMonth2
             b.indicatorM3.text = if (obj.visibilityMonth3.isNullOrBlank()) "—" else obj.visibilityMonth3
             b.indicatorM4.text = if (obj.visibilityMonth4.isNullOrBlank()) "—" else obj.visibilityMonth4
 
+            // Ocultamos el campo antiguo para evitar confusión
             b.textWishVisibility.visibility = android.view.View.GONE
 
-            // Referencia de subs
+            // Lógica de referencias (subs y tiempos) 
             val refParts = mutableListOf<String>()
             if (obj.refLproSubs > 0) refParts.add("L-Pro: ${obj.refLproSubs}×${obj.refLproExpSec}s")
             if (obj.refHaSubs > 0) refParts.add("Hα: ${obj.refHaSubs}×${obj.refHaExpSec}s")
             if (obj.refOiiiSubs > 0) refParts.add("OIII: ${obj.refOiiiSubs}×${obj.refOiiiExpSec}s")
-            
+
             if (refParts.isNotEmpty()) {
                 b.textWishRef.visibility = android.view.View.VISIBLE
                 b.textWishRef.text = "Ref: ${refParts.joinToString(" · ")}  →  ${obj.refTotalTime}"
@@ -62,7 +63,7 @@ class WishlistAdapter(
                 b.textWishRef.visibility = android.view.View.GONE
             }
 
-            // Estado
+            // Estado y Colores
             val (bgColor, fgColor) = when (obj.status) {
                 "Completado" -> R.color.status_done_bg to R.color.status_done_fg
                 "En curso" -> R.color.status_progress_bg to R.color.status_progress_fg
