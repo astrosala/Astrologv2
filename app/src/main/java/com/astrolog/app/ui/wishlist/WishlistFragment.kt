@@ -55,7 +55,7 @@ class WishlistFragment : Fragment() {
         binding.fabAddObject.setOnClickListener { showObjectDialog(null) }
     }
 
-    private fun showObjectDialog(existing: AstroObject?) {
+   private fun showObjectDialog(existing: AstroObject?) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_object, null)
 
         val nameField = dialogView.findViewById<TextInputEditText>(R.id.edit_dialog_name)
@@ -63,7 +63,6 @@ class WishlistFragment : Fragment() {
         val seasonSpinner = dialogView.findViewById<Spinner>(R.id.spinner_season_selector)
         val totalText = dialogView.findViewById<TextView>(R.id.text_ref_total_time)
 
-        // Lógica de etiquetas de meses
         val labels = listOf(
             dialogView.findViewById<TextView>(R.id.label_month1),
             dialogView.findViewById<TextView>(R.id.label_month2),
@@ -71,7 +70,6 @@ class WishlistFragment : Fragment() {
             dialogView.findViewById<TextView>(R.id.label_month4)
         )
 
-        // Configuración de Spinners y Temporadas
         val visValues = arrayOf("★", "✓", "~", "—")
         val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
         val spinners = listOf<Spinner?>(
@@ -88,23 +86,50 @@ class WishlistFragment : Fragment() {
         val sAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, seasonsList.map { it.name })
         seasonSpinner?.adapter = sAdapter
 
-        // Referencias de filtros para cálculo de tiempo
-        val editLproSubs = dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lpro_subs)
-        val editLproExp = dialogView.findViewById<TextInputEditText>(R.id.edit_ref_lpro_exp)
-        // ... (puedes añadir más si lo deseas)
-
+        // --- LÓGICA DE CARGA DE DATOS EXISTENTES ---
         if (existing != null) {
             nameField?.setText(existing.name)
             filterField?.setText(existing.mainFilter)
-            // Cargar selecciones previas...
+            
+            // 1. Encontrar y seleccionar la temporada correcta en el Spinner
+            val seasonIndex = seasonsList.indexOfFirst { it.id == existing.seasonId }
+            if (seasonIndex >= 0) {
+                seasonSpinner?.setSelection(seasonIndex)
+                // Poner los nombres de los meses de esa temporada en las etiquetas
+                val s = seasonsList[seasonIndex]
+                labels[0]?.text = s.month1
+                labels[1]?.text = s.month2
+                labels[2]?.text = s.month3
+                labels[3]?.text = s.month4
+            }
+
+            // 2. Cargar las estrellas/visibilidad guardadas
+            spinners[0]?.setSelection(visValues.indexOf(existing.visibilityMonth1).coerceAtLeast(0))
+            spinners[1]?.setSelection(visValues.indexOf(existing.visibilityMonth2).coerceAtLeast(0))
+            spinners[2]?.setSelection(visValues.indexOf(existing.visibilityMonth3).coerceAtLeast(0))
+            spinners[3]?.setSelection(visValues.indexOf(existing.visibilityMonth4).coerceAtLeast(0))
+            
+            // Aquí deberías cargar también los campos de Subs/Exp si los usas
+        }
+
+        // --- LISTENER PARA CAMBIO DE TEMPORADA (Si el usuario cambia la temporada en el diálogo) ---
+        seasonSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val s = seasonsList[position]
+                labels[0]?.text = s.month1
+                labels[1]?.text = s.month2
+                labels[2]?.text = s.month3
+                labels[3]?.text = s.month4
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(if (existing == null) "Añadir objeto" else "Editar")
+            .setTitle(if (existing == null) "Añadir objeto" else "Editar ${existing.name}")
             .setView(dialogView)
             .setPositiveButton("Guardar") { _, _ ->
                 val selectedPos = seasonSpinner?.selectedItemPosition ?: -1
-                val sId = if (selectedPos >= 0 && seasonsList.isNotEmpty()) seasonsList[selectedPos].id else 0L
+                val sId = if (selectedPos >= 0 && seasonsList.isNotEmpty()) seasonsList[selectedPos].id else existing?.seasonId ?: 0L
 
                 val obj = (existing ?: AstroObject(name = "")).copy(
                     name = nameField?.text.toString(),
