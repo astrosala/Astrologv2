@@ -59,12 +59,20 @@ class NewSessionFragment : Fragment() {
             ))
         }
 
-        // Autocompletado
-        viewModel.objectNames.observe(viewLifecycleOwner) { names ->
-            binding.editObjectName.setAdapter(
-                ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, names)
-            )
-        }
+      // --- NUEVO CÓDIGO PARA EL DESPLEGABLE ---
+val prefs = requireContext().getSharedPreferences("astrolog_prefs", android.content.Context.MODE_PRIVATE)
+val activeSeasonId = prefs.getLong("active_season_id", 0L)
+
+viewModel.allObjects.observe(viewLifecycleOwner) { listaDeObjetos ->
+    // Filtramos para que solo salgan objetos de la temporada elegida en ajustes
+    val objetosFiltrados = listaDeObjetos.filter { it.seasonId == activeSeasonId }
+    val nombres = objetosFiltrados.map { it.name }
+    
+    val adapter = android.widget.ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nombres)
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    binding.spinnerObjectName.adapter = adapter
+}
+// -----------------------------------------
 
         // Seeing
         val seeingDots = listOf(binding.dot1, binding.dot2, binding.dot3, binding.dot4, binding.dot5)
