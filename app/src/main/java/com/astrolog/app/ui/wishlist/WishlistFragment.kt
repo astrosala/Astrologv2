@@ -121,12 +121,8 @@ class WishlistFragment : Fragment() {
         val nameField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_name)
         val filterField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_filter)
         val seasonSpinner = dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_season_selector)
-        
-        val labelM1 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_mar)
-        val labelM2 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_abr)
-        val labelM3 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_may)
-        val labelM4 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_jun)
 
+        // Configurar selector de temporadas
         val seasons = viewModel.allSeasons.value ?: emptyList()
         val seasonNames = seasons.map { it.name }
         val sAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, seasonNames)
@@ -136,12 +132,12 @@ class WishlistFragment : Fragment() {
         // Spinners de visibilidad mensual
         val visValues = arrayOf("★", "✓", "~", "—")
         val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
-        
-        val spinners = listOf(
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_mar),
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_abr),
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_may),
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_jun)
+
+        val spinners = listOf<Spinner?>(
+            dialogView.findViewById(com.astrolog.app.R.id.spinner_mar),
+            dialogView.findViewById(com.astrolog.app.R.id.spinner_abr),
+            dialogView.findViewById(com.astrolog.app.R.id.spinner_may),
+            dialogView.findViewById(com.astrolog.app.R.id.spinner_jun)
         )
 
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, visOptions)
@@ -151,146 +147,65 @@ class WishlistFragment : Fragment() {
             s?.setSelection(3)
         }
 
-        seasonSpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (seasons.isNotEmpty()) {
-                    val selectedSeason = seasons[position]
-                    labelM1?.text = selectedSeason.month1
-                    labelM2?.text = selectedSeason.month2
-                    labelM3?.text = selectedSeason.month3
-                    labelM4?.text = selectedSeason.month4
-                }
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        }
-
         if (existing != null) {
             nameField?.setText(existing.name)
             filterField?.setText(existing.mainFilter)
-            val sIdx = seasons.indexOfFirst { it.id == existing.seasonId }
-            if (sIdx >= 0) seasonSpinner?.setSelection(sIdx)
+            val index = seasons.indexOfFirst { it.id == existing.seasonId }
+            if (index >= 0) seasonSpinner?.setSelection(index)
             
-            spinners[0]?.setSelection(visValues.indexOf(existing.visibilityMonth1).takeIf { it >= 0 } ?: 3)
-            spinners[1]?.setSelection(visValues.indexOf(existing.visibilityMonth2).takeIf { it >= 0 } ?: 3)
-            spinners[2]?.setSelection(visValues.indexOf(existing.visibilityMonth3).takeIf { it >= 0 } ?: 3)
-            spinners[3]?.setSelection(visValues.indexOf(existing.visibilityMonth4).takeIf { it >= 0 } ?: 3)
+            spinners[0]?.setSelection(visValues.indexOf(existing.visibilityMonth1).coerceAtLeast(0))
+            spinners[1]?.setSelection(visValues.indexOf(existing.visibilityMonth2).coerceAtLeast(0))
+            spinners[2]?.setSelection(visValues.indexOf(existing.visibilityMonth3).coerceAtLeast(0))
+            spinners[3]?.setSelection(visValues.indexOf(existing.visibilityMonth4).coerceAtLeast(0))
         } else {
             val activeIndex = seasons.indexOfFirst { it.id == viewModel.activeSeason.value?.id }
             if (activeIndex >= 0) seasonSpinner?.setSelection(activeIndex)
         }
 
-        // Referencias de subs
+        // Referencias de campos de texto (Filtros)
         val refLproSubs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_lpro_subs)
         val refLproExp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_lpro_exp)
-        val refLproTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_lpro_time)
         val refHaSubs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_ha_subs)
         val refHaExp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_ha_exp)
-        val refHaTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_ha_time)
         val refOiiiSubs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_oiii_subs)
         val refOiiiExp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_oiii_exp)
-        val refOiiiTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_oiii_time)
         val refSiiSubs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_sii_subs)
         val refSiiExp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_sii_exp)
-        val refSiiTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_sii_time)
         val refLextSubs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_lext_subs)
         val refLextExp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_lext_exp)
-        val refLextTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_lext_time)
         val refC1Subs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_c1_subs)
         val refC1Exp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_c1_exp)
-        val refC1Time = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_c1_time)
         val refC2Subs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_c2_subs)
         val refC2Exp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_c2_exp)
-        val refC2Time = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_c2_time)
-        val refTotalTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_total_time)
 
-        dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_ref_c1)?.text = viewModel.custom1Name
-        dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_ref_c2)?.text = viewModel.custom2Name
-
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_lpro)?.visibility = if (viewModel.showLpro) View.VISIBLE else View.GONE
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_ha)?.visibility = if (viewModel.showHa) View.VISIBLE else View.GONE
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_oiii)?.visibility = if (viewModel.showOiii) View.VISIBLE else View.GONE
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_sii)?.visibility = if (viewModel.showSii) View.VISIBLE else View.GONE
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_lext)?.visibility = if (viewModel.showLext) View.VISIBLE else View.GONE
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_c1)?.visibility = if (viewModel.showCustom1) View.VISIBLE else View.GONE
-        dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_c2)?.visibility = if (viewModel.showCustom2) View.VISIBLE else View.GONE
-
-        if (existing != null) {
-            if (existing.refLproSubs > 0) refLproSubs?.setText(existing.refLproSubs.toString())
-            if (existing.refLproExpSec > 0) refLproExp?.setText(existing.refLproExpSec.toString())
-            if (existing.refHaSubs > 0) refHaSubs?.setText(existing.refHaSubs.toString())
-            if (existing.refHaExpSec > 0) refHaExp?.setText(existing.refHaExpSec.toString())
-            if (existing.refOiiiSubs > 0) refOiiiSubs?.setText(existing.refOiiiSubs.toString())
-            if (existing.refOiiiExpSec > 0) refOiiiExp?.setText(existing.refOiiiExpSec.toString())
-            if (existing.refSiiSubs > 0) refSiiSubs?.setText(existing.refSiiSubs.toString())
-            if (existing.refSiiExpSec > 0) refSiiExp?.setText(existing.refSiiExpSec.toString())
-            if (existing.refLextSubs > 0) refLextSubs?.setText(existing.refLextSubs.toString())
-            if (existing.refLextExpSec > 0) refLextExp?.setText(existing.refLextExpSec.toString())
-            if (existing.refCustom1Subs > 0) refC1Subs?.setText(existing.refCustom1Subs.toString())
-            if (existing.refCustom1ExpSec > 0) refC1Exp?.setText(existing.refCustom1ExpSec.toString())
-            if (existing.refCustom2Subs > 0) refC2Subs?.setText(existing.refCustom2Subs.toString())
-            if (existing.refCustom2ExpSec > 0) refC2Exp?.setText(existing.refCustom2ExpSec.toString())
+        existing?.let { obj ->
+            if (obj.refLproSubs > 0) refLproSubs?.setText(obj.refLproSubs.toString())
+            if (obj.refLproExpSec > 0) refLproExp?.setText(obj.refLproExpSec.toString())
+            if (obj.refHaSubs > 0) refHaSubs?.setText(obj.refHaSubs.toString())
+            if (obj.refHaExpSec > 0) refHaExp?.setText(obj.refHaExpSec.toString())
+            if (obj.refOiiiSubs > 0) refOiiiSubs?.setText(obj.refOiiiSubs.toString())
+            if (obj.refOiiiExpSec > 0) refOiiiExp?.setText(obj.refOiiiExpSec.toString())
+            if (obj.refSiiSubs > 0) refSiiSubs?.setText(obj.refSiiSubs.toString())
+            if (obj.refSiiExpSec > 0) refSiiExp?.setText(obj.refSiiExpSec.toString())
+            if (obj.refLextSubs > 0) refLextSubs?.setText(obj.refLextSubs.toString())
+            if (obj.refLextExpSec > 0) refLextExp?.setText(obj.refLextExpSec.toString())
+            if (obj.refCustom1Subs > 0) refC1Subs?.setText(obj.refCustom1Subs.toString())
+            if (obj.refCustom1ExpSec > 0) refC1Exp?.setText(obj.refCustom1ExpSec.toString())
+            if (obj.refCustom2Subs > 0) refC2Subs?.setText(obj.refCustom2Subs.toString())
+            if (obj.refCustom2ExpSec > 0) refC2Exp?.setText(obj.refCustom2ExpSec.toString())
         }
-
-        fun formatTime(subs: Int, exp: Int): String {
-            val sec = subs * exp
-            if (sec == 0) return "00:00"
-            return "%02d:%02d".format(sec / 3600, (sec % 3600) / 60)
-        }
-
-        fun recalcRef() {
-            val ls = refLproSubs?.text.toString().toIntOrNull() ?: 0
-            val le = refLproExp?.text.toString().toIntOrNull() ?: 0
-            val hs = refHaSubs?.text.toString().toIntOrNull() ?: 0
-            val he = refHaExp?.text.toString().toIntOrNull() ?: 0
-            val os = refOiiiSubs?.text.toString().toIntOrNull() ?: 0
-            val oe = refOiiiExp?.text.toString().toIntOrNull() ?: 0
-            val ss = refSiiSubs?.text.toString().toIntOrNull() ?: 0
-            val se = refSiiExp?.text.toString().toIntOrNull() ?: 0
-            val xs = refLextSubs?.text.toString().toIntOrNull() ?: 0
-            val xe = refLextExp?.text.toString().toIntOrNull() ?: 0
-            val c1s = refC1Subs?.text.toString().toIntOrNull() ?: 0
-            val c1e = refC1Exp?.text.toString().toIntOrNull() ?: 0
-            val c2s = refC2Subs?.text.toString().toIntOrNull() ?: 0
-            val c2e = refC2Exp?.text.toString().toIntOrNull() ?: 0
-            
-            refLproTime?.text = formatTime(ls, le)
-            refHaTime?.text = formatTime(hs, he)
-            refOiiiTime?.text = formatTime(os, oe)
-            refSiiTime?.text = formatTime(ss, se)
-            refLextTime?.text = formatTime(xs, xe)
-            refC1Time?.text = formatTime(c1s, c1e)
-            refC2Time?.text = formatTime(c2s, c2e)
-            
-            val totalSec = ls*le + hs*he + os*oe + ss*se + xs*xe + c1s*c1e + c2s*c2e
-            refTotalTime?.text = "Total ref: ${"%02d:%02d".format(totalSec / 3600, (totalSec % 3600) / 60)}"
-        }
-
-        val watcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) { recalcRef() }
-        }
-        
-        listOf(refLproSubs, refLproExp, refHaSubs, refHaExp, refOiiiSubs, refOiiiExp,
-               refSiiSubs, refSiiExp, refLextSubs, refLextExp, refC1Subs, refC1Exp,
-               refC2Subs, refC2Exp).forEach { it?.addTextChangedListener(watcher) }
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(if (existing == null) "Añadir objeto" else "Editar ${existing.name}")
             .setView(dialogView)
             .setPositiveButton(if (existing == null) "Añadir" else "Guardar") { _, _ ->
                 val selectedSeasonPos = seasonSpinner?.selectedItemPosition ?: -1
-                val finalSeasonId = if (selectedSeasonPos >= 0 && seasons.isNotEmpty()) {
-                    seasons[selectedSeasonPos].id
-                } else {
-                    existing?.seasonId ?: 0L
-                }
+                val finalSeasonId = if (selectedSeasonPos >= 0 && seasons.isNotEmpty()) seasons[selectedSeasonPos].id else existing?.seasonId ?: 0L
 
-                // Extraemos valores de visibilidad de forma segura
-                val v1 = visValues[spinners[0]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
-                val v2 = visValues[spinners[1]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
-                val v3 = visValues[spinners[2]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
-                val v4 = visValues[spinners[3]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
+                val v1 = visValues[spinners[0]?.selectedItemPosition?.coerceAtLeast(0) ?: 3]
+                val v2 = visValues[spinners[1]?.selectedItemPosition?.coerceAtLeast(0) ?: 3]
+                val v3 = visValues[spinners[2]?.selectedItemPosition?.coerceAtLeast(0) ?: 3]
+                val v4 = visValues[spinners[3]?.selectedItemPosition?.coerceAtLeast(0) ?: 3]
 
                 val obj = AstroObject(
                     id = existing?.id ?: 0L,
