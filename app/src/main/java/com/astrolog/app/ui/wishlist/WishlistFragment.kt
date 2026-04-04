@@ -37,6 +37,8 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
         activeSeason.value = repo.getActiveSeason()
     }
 
+    val allSeasons = repo.allSeasons
+
     val allObjects = repo.allObjects
 
     val showLpro get() = prefs.getBoolean("show_lpro", true)
