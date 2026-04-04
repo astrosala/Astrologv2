@@ -30,6 +30,13 @@
                 android:layout_height="wrap_content" android:inputType="text"
                 android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Asignar a Temporada" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:textStyle="bold"
+            android:layout_marginTop="12dp" android:layout_marginBottom="4dp" />
+
+        <Spinner android:id="@+id/spinner_season_selector" 
+            android:layout_width="match_parent" android:layout_height="48dp" />
 
         <!-- Visibilidad -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
