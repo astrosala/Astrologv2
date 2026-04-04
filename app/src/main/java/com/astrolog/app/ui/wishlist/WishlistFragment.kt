@@ -88,25 +88,42 @@ class WishlistFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = WishlistAdapter(
-            onStatusClick = { viewModel.cycleStatus(it) },
-            onEditClick = { obj -> showObjectDialog(obj) },
-            onAlertClick = { obj -> showAlertDialog(obj) },
-            onDeleteClick = { obj ->
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Eliminar objeto")
-                    .setMessage("¿Eliminar ${obj.name}?")
-                    .setPositiveButton("Eliminar") { _, _ -> viewModel.deleteObject(obj) }
-                    .setNegativeButton("Cancelar", null)
-                    .show()
-            }
-        )
         binding.recyclerWishlist.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerWishlist.adapter = adapter
-        viewModel.allObjects.observe(viewLifecycleOwner) { adapter.submitList(it) }
+
+        // Observamos las temporadas: cuando lleguen, creamos o actualizamos el adaptador
+        viewModel.allSeasons.observe(viewLifecycleOwner) { seasonsList ->
+            
+            // Creamos el adaptador pasándole las temporadas reales
+            adapter = WishlistAdapter(
+                seasons = seasonsList,
+                onStatusClick = { viewModel.cycleStatus(it) },
+                onEditClick = { obj -> showObjectDialog(obj) },
+                onAlertClick = { obj -> showAlertDialog(obj) },
+                onDeleteClick = { obj ->
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Eliminar objeto")
+                        .setMessage("¿Eliminar ${obj.name}?")
+                        .setPositiveButton("Eliminar") { _, _ -> viewModel.deleteObject(obj) }
+                        .setNegativeButton("Cancelar", null)
+                        .show()
+                }
+            )
+            binding.recyclerWishlist.adapter = adapter
+            
+            // Una vez que el adaptador existe, le pasamos los objetos
+            viewModel.allObjects.value?.let { adapter.submitList(it) }
+        }
+
+        // Seguimos observando los objetos para cuando añadas nuevos
+        viewModel.allObjects.observe(viewLifecycleOwner) { 
+            if (::adapter.isInitialized) {
+                adapter.submitList(it)
+            }
+        }
+
         binding.fabAddObject.setOnClickListener { showObjectDialog(null) }
     }
 
