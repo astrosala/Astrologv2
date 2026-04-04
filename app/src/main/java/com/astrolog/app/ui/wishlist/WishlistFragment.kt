@@ -116,34 +116,40 @@ class WishlistFragment : Fragment() {
     }
 
     private fun showObjectDialog(existing: AstroObject?) {
-        val dialogView = layoutInflater.inflate(
-            com.astrolog.app.R.layout.dialog_add_object, null
-        )
-
-// --- COPIA ESTO PARA SUSTITUIR LAS LÍNEAS 124 A 127 ---
-    visibilityMonth1 = spinners[0]?.selectedItem?.toString() ?: "—",
-    visibilityMonth2 = spinners[1]?.selectedItem?.toString() ?: "—",
-    visibilityMonth3 = spinners[2]?.selectedItem?.toString() ?: "—",
-    visibilityMonth4 = spinners[3]?.selectedItem?.toString() ?: "—",
-        // 2. Cogemos la temporada activa y actualizamos los textos
-        viewModel.activeSeason.value?.let { active ->
-            labelM1?.text = active.month1
-            labelM2?.text = active.month2
-            labelM3?.text = active.month3
-            labelM4?.text = active.month4
-        }
-        // --- AQUÍ TERMINA EL CAMBIO ---
+        val dialogView = layoutInflater.inflate(com.astrolog.app.R.layout.dialog_add_object, null)
 
         val nameField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_name)
         val filterField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_filter)
         val seasonSpinner = dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_season_selector)
+        
+        val labelM1 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_mar)
+        val labelM2 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_abr)
+        val labelM3 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_may)
+        val labelM4 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_jun)
 
-        // Configurar selector de temporadas
         val seasons = viewModel.allSeasons.value ?: emptyList()
         val seasonNames = seasons.map { it.name }
         val sAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, seasonNames)
         sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         seasonSpinner?.adapter = sAdapter
+
+        // Spinners de visibilidad mensual
+        val visValues = arrayOf("★", "✓", "~", "—")
+        val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
+        
+        val spinners = listOf(
+            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_mar),
+            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_abr),
+            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_may),
+            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_jun)
+        )
+
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, visOptions)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinners.forEach { s ->
+            s?.adapter = spinnerAdapter
+            s?.setSelection(3)
+        }
 
         seasonSpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -158,16 +164,22 @@ class WishlistFragment : Fragment() {
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
 
-        // Seleccionar la temporada correspondiente si editamos o si hay una activa
         if (existing != null) {
-            val index = seasons.indexOfFirst { it.id == existing.seasonId }
-            if (index >= 0) seasonSpinner?.setSelection(index)
+            nameField?.setText(existing.name)
+            filterField?.setText(existing.mainFilter)
+            val sIdx = seasons.indexOfFirst { it.id == existing.seasonId }
+            if (sIdx >= 0) seasonSpinner?.setSelection(sIdx)
+            
+            spinners[0]?.setSelection(visValues.indexOf(existing.visibilityMonth1).takeIf { it >= 0 } ?: 3)
+            spinners[1]?.setSelection(visValues.indexOf(existing.visibilityMonth2).takeIf { it >= 0 } ?: 3)
+            spinners[2]?.setSelection(visValues.indexOf(existing.visibilityMonth3).takeIf { it >= 0 } ?: 3)
+            spinners[3]?.setSelection(visValues.indexOf(existing.visibilityMonth4).takeIf { it >= 0 } ?: 3)
         } else {
             val activeIndex = seasons.indexOfFirst { it.id == viewModel.activeSeason.value?.id }
             if (activeIndex >= 0) seasonSpinner?.setSelection(activeIndex)
         }
 
-        // Referencias de subs (Configuración visual igual a la anterior)
+        // Referencias de subs
         val refLproSubs = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_lpro_subs)
         val refLproExp = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_ref_lpro_exp)
         val refLproTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_lpro_time)
@@ -191,7 +203,6 @@ class WishlistFragment : Fragment() {
         val refC2Time = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_c2_time)
         val refTotalTime = dialogView.findViewById<TextView>(com.astrolog.app.R.id.text_ref_total_time)
 
-        // Labels y visibilidad de filtros
         dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_ref_c1)?.text = viewModel.custom1Name
         dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_ref_c2)?.text = viewModel.custom2Name
 
@@ -203,50 +214,23 @@ class WishlistFragment : Fragment() {
         dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_c1)?.visibility = if (viewModel.showCustom1) View.VISIBLE else View.GONE
         dialogView.findViewById<View>(com.astrolog.app.R.id.card_ref_c2)?.visibility = if (viewModel.showCustom2) View.VISIBLE else View.GONE
 
-        // Spinners de visibilidad mensual
-        val visValues = arrayOf("★", "✓", "~", "—")
-        val visOptions = arrayOf("★ Óptimo", "✓ Buena", "~ Baja", "— No visible")
-        fun indexOf(v: String) = visValues.indexOfFirst { it == v }.takeIf { it >= 0 } ?: 3
-
-        val spinners = listOf(
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_mar),
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_abr),
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_may),
-            dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_jun)
-        )
-
-        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, visOptions)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinners.forEach { s ->
-            s?.adapter = spinnerAdapter
-            s?.setSelection(3)
+        if (existing != null) {
+            if (existing.refLproSubs > 0) refLproSubs?.setText(existing.refLproSubs.toString())
+            if (existing.refLproExpSec > 0) refLproExp?.setText(existing.refLproExpSec.toString())
+            if (existing.refHaSubs > 0) refHaSubs?.setText(existing.refHaSubs.toString())
+            if (existing.refHaExpSec > 0) refHaExp?.setText(existing.refHaExpSec.toString())
+            if (existing.refOiiiSubs > 0) refOiiiSubs?.setText(existing.refOiiiSubs.toString())
+            if (existing.refOiiiExpSec > 0) refOiiiExp?.setText(existing.refOiiiExpSec.toString())
+            if (existing.refSiiSubs > 0) refSiiSubs?.setText(existing.refSiiSubs.toString())
+            if (existing.refSiiExpSec > 0) refSiiExp?.setText(existing.refSiiExpSec.toString())
+            if (existing.refLextSubs > 0) refLextSubs?.setText(existing.refLextSubs.toString())
+            if (existing.refLextExpSec > 0) refLextExp?.setText(existing.refLextExpSec.toString())
+            if (existing.refCustom1Subs > 0) refC1Subs?.setText(existing.refCustom1Subs.toString())
+            if (existing.refCustom1ExpSec > 0) refC1Exp?.setText(existing.refCustom1ExpSec.toString())
+            if (existing.refCustom2Subs > 0) refC2Subs?.setText(existing.refCustom2Subs.toString())
+            if (existing.refCustom2ExpSec > 0) refC2Exp?.setText(existing.refCustom2ExpSec.toString())
         }
 
-        existing?.let { obj ->
-            nameField?.setText(obj.name)
-            filterField?.setText(obj.mainFilter)
-            spinners[0]?.setSelection(indexOf(obj.visibilityMonth1))
-            spinners[1]?.setSelection(indexOf(obj.visibilityMonth2))
-            spinners[2]?.setSelection(indexOf(obj.visibilityMonth3))
-            spinners[3]?.setSelection(indexOf(obj.visibilityMonth4))
-            
-            if (obj.refLproSubs > 0) refLproSubs?.setText(obj.refLproSubs.toString())
-            if (obj.refLproExpSec > 0) refLproExp?.setText(obj.refLproExpSec.toString())
-            if (obj.refHaSubs > 0) refHaSubs?.setText(obj.refHaSubs.toString())
-            if (obj.refHaExpSec > 0) refHaExp?.setText(obj.refHaExpSec.toString())
-            if (obj.refOiiiSubs > 0) refOiiiSubs?.setText(obj.refOiiiSubs.toString())
-            if (obj.refOiiiExpSec > 0) refOiiiExp?.setText(obj.refOiiiExpSec.toString())
-            if (obj.refSiiSubs > 0) refSiiSubs?.setText(obj.refSiiSubs.toString())
-            if (obj.refSiiExpSec > 0) refSiiExp?.setText(obj.refSiiExpSec.toString())
-            if (obj.refLextSubs > 0) refLextSubs?.setText(obj.refLextSubs.toString())
-            if (obj.refLextExpSec > 0) refLextExp?.setText(obj.refLextExpSec.toString())
-            if (obj.refCustom1Subs > 0) refC1Subs?.setText(obj.refCustom1Subs.toString())
-            if (obj.refCustom1ExpSec > 0) refC1Exp?.setText(obj.refCustom1ExpSec.toString())
-            if (obj.refCustom2Subs > 0) refC2Subs?.setText(obj.refCustom2Subs.toString())
-            if (obj.refCustom2ExpSec > 0) refC2Exp?.setText(obj.refCustom2ExpSec.toString())
-        }
-
-        // Lógica de cálculo de tiempos (igual que antes)
         fun formatTime(subs: Int, exp: Int): String {
             val sec = subs * exp
             if (sec == 0) return "00:00"
@@ -295,13 +279,18 @@ class WishlistFragment : Fragment() {
             .setTitle(if (existing == null) "Añadir objeto" else "Editar ${existing.name}")
             .setView(dialogView)
             .setPositiveButton(if (existing == null) "Añadir" else "Guardar") { _, _ ->
-                // Lógica de guardado con la temporada seleccionada
                 val selectedSeasonPos = seasonSpinner?.selectedItemPosition ?: -1
                 val finalSeasonId = if (selectedSeasonPos >= 0 && seasons.isNotEmpty()) {
                     seasons[selectedSeasonPos].id
                 } else {
                     existing?.seasonId ?: 0L
                 }
+
+                // Extraemos valores de visibilidad de forma segura
+                val v1 = visValues[spinners[0]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
+                val v2 = visValues[spinners[1]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
+                val v3 = visValues[spinners[2]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
+                val v4 = visValues[spinners[3]?.selectedItemPosition?.takeIf { it >= 0 } ?: 3]
 
                 val obj = AstroObject(
                     id = existing?.id ?: 0L,
@@ -311,10 +300,10 @@ class WishlistFragment : Fragment() {
                     status = existing?.status ?: "Pendiente",
                     alertEnabled = existing?.alertEnabled ?: false,
                     alertMonths = existing?.alertMonths ?: "",
-                   visibilityMonth1 = visValues[if (spinners[0]?.selectedItemPosition ?: -1 >= 0) spinners[0]!!.selectedItemPosition else 3],
-                   visibilityMonth2 = visValues[if (spinners[1]?.selectedItemPosition ?: -1 >= 0) spinners[1]!!.selectedItemPosition else 3],
-                   visibilityMonth3 = visValues[if (spinners[2]?.selectedItemPosition ?: -1 >= 0) spinners[2]!!.selectedItemPosition else 3],
-                   visibilityMonth4 = visValues[if (spinners[3]?.selectedItemPosition ?: -1 >= 0) spinners[3]!!.selectedItemPosition else 3],
+                    visibilityMonth1 = v1,
+                    visibilityMonth2 = v2,
+                    visibilityMonth3 = v3,
+                    visibilityMonth4 = v4,
                     refLproSubs = refLproSubs?.text.toString().toIntOrNull() ?: 0,
                     refLproExpSec = refLproExp?.text.toString().toIntOrNull() ?: 0,
                     refHaSubs = refHaSubs?.text.toString().toIntOrNull() ?: 0,
@@ -336,18 +325,14 @@ class WishlistFragment : Fragment() {
             .show()
     }
 
-  private fun showAlertDialog(obj: AstroObject) {
-        // 1. Buscamos a qué temporada pertenece este objeto concreto
+    private fun showAlertDialog(obj: AstroObject) {
         val mySeason = viewModel.allSeasons.value?.find { it.id == obj.seasonId }
-        
-        // 2. Creamos la lista de meses usando los nombres de esa temporada
         val months = arrayOf(
             mySeason?.month1 ?: "Mes 1",
             mySeason?.month2 ?: "Mes 2",
             mySeason?.month3 ?: "Mes 3",
             mySeason?.month4 ?: "Mes 4"
         )
-        
         val currentMonths = obj.alertMonths.split(",").map { it.trim() }.filter { it.isNotEmpty() }
         val checked = months.map { it in currentMonths }.toBooleanArray()
         MaterialAlertDialogBuilder(requireContext())
