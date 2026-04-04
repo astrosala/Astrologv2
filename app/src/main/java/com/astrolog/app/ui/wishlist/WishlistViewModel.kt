@@ -16,14 +16,14 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
     val activeSeason = MutableLiveData<Season?>()
     val allSeasons: MutableLiveData<List<Season>> = MutableLiveData()
     
-    // Declaramos la variable pero la inicializamos en el init
+    // Cambiado: Declaramos el LiveData pero no lo inicializamos aquí para evitar el error de 'repo'
     val allObjects: LiveData<List<AstroObject>>
 
     init {
         val db = AstroDatabase.getDatabase(app)
         repo = AstroRepository(db.sessionDao(), db.astroObjectDao(), db.seasonDao())
         
-        // Ahora sí, inicializamos después de tener el repo listo
+        // Ahora inicializamos allObjects después de que repo ya existe 
         allObjects = repo.allObjects
         
         loadData()
@@ -31,7 +31,7 @@ class WishlistViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun loadData() = viewModelScope.launch {
         activeSeason.value = repo.getActiveSeason()
-        // Observamos los cambios en las temporadas
+        // Cargamos las temporadas y las exponemos
         repo.allSeasons.observeForever { allSeasons.value = it }
     }
 
