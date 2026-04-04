@@ -120,6 +120,22 @@ class WishlistFragment : Fragment() {
             com.astrolog.app.R.layout.dialog_add_object, null
         )
 
+        // --- AQUÍ EMPIEZA EL CAMBIO ---
+        // 1. Buscamos los "carteles" que creamos en el XML
+        val labelM1 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month1)
+        val labelM2 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month2)
+        val labelM3 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month3)
+        val labelM4 = dialogView.findViewById<TextView>(com.astrolog.app.R.id.label_month4)
+
+        // 2. Cogemos la temporada activa y actualizamos los textos
+        viewModel.activeSeason.value?.let { active ->
+            labelM1?.text = active.month1
+            labelM2?.text = active.month2
+            labelM3?.text = active.month3
+            labelM4?.text = active.month4
+        }
+        // --- AQUÍ TERMINA EL CAMBIO ---
+
         val nameField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_name)
         val filterField = dialogView.findViewById<TextInputEditText>(com.astrolog.app.R.id.edit_dialog_filter)
         val seasonSpinner = dialogView.findViewById<Spinner>(com.astrolog.app.R.id.spinner_season_selector)
@@ -130,6 +146,19 @@ class WishlistFragment : Fragment() {
         val sAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, seasonNames)
         sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         seasonSpinner?.adapter = sAdapter
+
+        seasonSpinner?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (seasons.isNotEmpty()) {
+                    val selectedSeason = seasons[position]
+                    labelM1?.text = selectedSeason.month1
+                    labelM2?.text = selectedSeason.month2
+                    labelM3?.text = selectedSeason.month3
+                    labelM4?.text = selectedSeason.month4
+                }
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        }
 
         // Seleccionar la temporada correspondiente si editamos o si hay una activa
         if (existing != null) {
@@ -309,8 +338,18 @@ class WishlistFragment : Fragment() {
             .show()
     }
 
-    private fun showAlertDialog(obj: AstroObject) {
-        val months = arrayOf("Marzo", "Abril", "Mayo", "Junio")
+  private fun showAlertDialog(obj: AstroObject) {
+        // 1. Buscamos a qué temporada pertenece este objeto concreto
+        val mySeason = viewModel.allSeasons.value?.find { it.id == obj.seasonId }
+        
+        // 2. Creamos la lista de meses usando los nombres de esa temporada
+        val months = arrayOf(
+            mySeason?.month1 ?: "Mes 1",
+            mySeason?.month2 ?: "Mes 2",
+            mySeason?.month3 ?: "Mes 3",
+            mySeason?.month4 ?: "Mes 4"
+        )
+        
         val currentMonths = obj.alertMonths.split(",").map { it.trim() }.filter { it.isNotEmpty() }
         val checked = months.map { it in currentMonths }.toBooleanArray()
         MaterialAlertDialogBuilder(requireContext())
